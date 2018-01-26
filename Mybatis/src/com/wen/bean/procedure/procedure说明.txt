@@ -1,0 +1,24 @@
+存储过程的基础知识:
+
+创建存储过程
+DELIMITER $$
+
+USE `mybatis`$$
+
+DROP PROCEDURE IF EXISTS `getUserProcdure`$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserProcdure`(IN ages INT, OUT usercount INT)
+BEGIN
+	IF ages=0 THEN
+		SELECT COUNT(*) FROM USER WHERE age=0 INTO usercount;
+	ELSE
+		SELECT COUNT(*) FROM USER WHERE age!=0 INTO usercount;
+	END IF;
+    END$$
+
+DELIMITER ;
+
+调用存储过程
+SET @userscount = 0;
+CALL `getUserProcdure`(0, @userscount);
+SELECT @userscount;

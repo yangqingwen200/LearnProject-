@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 父组件传值给子组件props中的number-to-child -->
+
+        <p style="color: red">
+            子组件标签中的属性key, 不支持驼峰写法, 需使用 - 连接, 属性值value采用驼峰标识写法,  而标签中取值, 采用的驼峰标识, <br>就算props中定义属性采用驼峰标识, 在写标签中属性, 也要采用 - 形式<br>
+            props中定义了childToFather或者child-to-father, 在标签属性中key也要使用child-to-father, 然而取值均采用{&nbsp;{childToFather}&nbsp;} 形式<br><br>
+            举例: &lt;my-header number-to-child="childToFather"&gt;{&nbsp;{childToFather}&nbsp;}&lt;/my-header&gt;
+        </p>
+
+        <my-header number-to-child="98" number1="30"></my-header>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    /* 子组件 */
+    var childcomponent = {
+        template: '<p> number-to-child的值--注意采用驼峰标识: {{numberToChild}}<br> ' +
+                    'number1的值: {{number1}}</p>',
+
+        /* 写了props, 相当于在data{} 中定义了属性一样, 可以在父组件中传值进来给子组件*/
+
+        // props: ["number-to-child", "number1"], 第一种写法, 采用数组的形式, 比较简单
+        props: {
+
+            /* Number说明只能接受数字类型, 在html中, 数值都会转成字符类型再传值, 所以98会被转成字符串, 而这里规定只能为数字类型, 所以控制台报错:Expected Number, got String */
+            "number-to-child": Number,
+            "number1": [Number, String, Object] /* 可以接受三种数据类型 */
+        },
+        data: function () {
+            return {
+                data: "data1" /* 在props中定义的属性, 相当于在这里也定义了一份, 只是props中定义的属性可以在父组件中传递进来 */
+            }
+        }
+    };
+
+    /* 父组件 */
+    var app = new Vue({
+        el: "#app",
+        components: {
+            "my-header": childcomponent
+        }
+    });
+</script>
+</html>

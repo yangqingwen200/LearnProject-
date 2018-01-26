@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="Add List Item(会发出List更新)" v-on:click="addItem"/>
+        <input type="button" value="Add List Item(不会发出List更新)" v-on:click="addItemNoAdd"/>
+        <ul>
+           <li v-for="(opt, index) in listItem">{{index}}, {{opt.id}}--{{opt.text}}</li>
+        </ul>
+
+    </div>
+
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data: {
+            listItem: [
+                { id: 0, text: '蔬菜' },
+                { id: 1, text: '奶酪' },
+                { id: 2, text: '随便其他什么人吃的东西' }
+            ]
+        },
+        methods: {
+            addItem: function () {
+                /*直接触发listItem更新. 本例采用push方式触发, 还有prop等等操作数组的方式,
+                    有些方法是不触发的,具体查看API文档*/
+                this.listItem.push({id: 3, text: 'New Add'});
+            },
+            addItemNoAdd: function () {
+                /*直接修改listItem中的值, 是不会触发<ul>中的li更新的*/
+                //this.listItem[1] = {id: 5, text: 'No Add'};
+
+                /*如果非要改变listItem中的值, 可以使用Vue.set方法*/
+                Vue.set(this.listItem, 1, {id: 6, text: 'Vue Set'});
+            }
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace要跟接口名称的全类名一致 -->
+<mapper namespace="com.wen.bean.interfacemapper.UserMapper">
+
+	<!-- id要跟接口中的方法名称, 方法参数一致 -->
+	<select id="getUser" parameterType="int" resultType="com.wen.bean.interfacemapper.User">
+		select * from user where id = #{id}
+	</select>
+	
+	<select id="getUserByIdReturnMap" parameterType="integer" resultType="map">
+		select * from user where id = #{id}
+	</select>
+	
+	<select id="getUserByName" parameterType="string" resultType="com.wen.bean.interfacemapper.User">
+		select * from user where name like #{name}
+	</select>
+	
+	<select id="getUserByIdByNameReturnMap" parameterType="string" resultType="com.wen.bean.interfacemapper.User">
+		select * from user where name like #{name}
+	</select>
+	
+	<insert id="insert">
+		insert into user (name, age, last_name) values (#{name}, #{age}, #{lastName})
+	</insert>
+</mapper>

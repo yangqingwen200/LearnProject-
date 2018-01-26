@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{content}}
+        {{content1}} <!--无法显示-->
+    </div>
+
+    <div id="app2">
+        {{content}}
+        {{content1}}
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            content: "this is content..."
+        }
+    });
+    app.$data.content = "this is change content...";
+    app.$data.content1 = "this is content1...";
+
+    var app2 = new Vue({
+        el: "#app2",
+        data: app.$data
+    });
+
+
+</script>
+</html>

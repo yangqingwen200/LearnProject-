@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wen.bean.procedure.userMapper">
+	<!-- 调用存储过程 -->
+	
+	<!-- statementType必须为CALLABLE,即调用存储过程,默认为STATEMENT -->
+	<select id="getCallProcedure" parameterMap="getUserCountMap" statementType="CALLABLE">
+		CALL getUserProcdure(?, ?)
+	</select>
+	
+	<!-- 
+		在测试类中有parammap
+		Map<String, Integer> parammap = new HashMap<String, Integer>();
+		parammap.put("age", 1);
+		parammap.put("count", -1);
+	 -->
+	<parameterMap type="java.util.Map" id="getUserCountMap">
+		<!-- mode="IN"表示把age作为输入参数, jdbcType=必须为大写, 有TINYINT  VARCHAR FLOAT  CHAR  TIMESTAMP等等-->
+		<parameter property="age" mode="IN" jdbcType="INTEGER"/>
+		
+		<!-- mode="OUT"表示把count作为输出参数(保存结果), jdbcType=必须为大写,有TINYINT  VARCHAR FLOAT  CHAR  TIMESTAMP等等-->
+		<parameter property="count" mode="OUT" jdbcType="INTEGER"/>
+	</parameterMap>
+
+</mapper>

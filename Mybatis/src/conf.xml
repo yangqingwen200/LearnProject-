@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE  configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<properties resource="jdbc.properties" />
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
+	<!-- 取别名 -->
+	<typeAliases>
+		<!-- 给具体的某个对象取别名 -->
+		<typeAlias type="com.wen.bean.CRUD.User" alias="_User" />
+
+		<!-- 给某个包取别名,想使用该包下的类,直接写类名就可以了 -->
+		<package name="com.wen.bean" />
+	</typeAliases>
+	
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+	</plugins>
+
+	<!-- development:开发模式,worker:工作模式 -->
+	<!-- default和id两个值要相同, 都为development或者work -->
+	<environments default="development">
+		<environment id="development">
+			<!-- 直接简单使用了 JDBC 的提交和回滚设置。它依赖于从数据源得到的连接来管理事务范围 -->
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<mappers>
+		<mapper resource="com/wen/bean/userMapper.xml" />
+
+		<mapper resource="com/wen/bean/CRUD/userMapper.xml" />
+
+		<mapper class="com.wen.bean.CRUD.Annotation.UserMapper" />
+
+		<mapper resource="com/wen/bean/column/userMapper.xml" />
+
+		<mapper resource="com/wen/bean/onetoone/teacherclassMapper.xml" />
+
+		<mapper resource="com/wen/bean/onetomany/teacherclassMapper.xml" />
+
+		<mapper resource="com/wen/bean/fuzzyquery/userMapper.xml" />
+
+		<mapper resource="com/wen/bean/procedure/userMapper.xml" />
+
+		<mapper resource="com/wen/bean/sessioncache/userMapper.xml" />
+
+		<mapper resource="com/wen/bean/sessionfactorycache/userMapper.xml" />
+
+		<mapper resource="com/wen/bean/interfacemapper/userMapper.xml" />
+		
+		<mapper resource="com/wen/bean/dynamic/userDynamicMapper.xml" />
+		
+		<mapper resource="com/wen/bean/pagehelper/userMapper.xml" />
+		
+	</mappers>
+</configuration>

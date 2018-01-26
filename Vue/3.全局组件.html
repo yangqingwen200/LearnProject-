@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-header></my-header>
+        {{content}}
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    /*全局组件: 注意要放在最前面, 否则无法渲染*/
+    Vue.component('my-header', {
+        template: '<p>this is my header...</p>'
+    });
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            content: "this is content"
+        }
+    });
+
+
+</script>
+</html>

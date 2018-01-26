@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="checkbox">
+        <input type="checkbox" value="apple" v-model="myCheckbox"> apple
+        <input type="checkbox" value="banana" v-model="myCheckbox"> banana
+        <input type="checkbox" value="pan" v-model="myCheckbox"> pan
+        {{myCheckbox}}
+    </div>
+    <div id="radio">
+        <input type="radio" value="apple" v-model="myRadiobox"> apple
+        <input type="radio" value="banana" v-model="myRadiobox"> banana
+        <input type="radio" value="pan" v-model="myRadiobox"> pan
+        <span v-text="myRadiobox"></span>
+    </div>
+    <div id="select">
+        <select v-model="mySelectbox">
+            <option value="">请选择</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+        {{mySelectbox}}
+    </div>
+
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: '#checkbox',
+        data: {
+            myCheckbox: []
+        }
+    });
+
+    new Vue({
+        el: '#radio',
+        data: {
+            myRadiobox: ''
+        }
+    });
+    new Vue({
+        el: '#select',
+        data: {
+            mySelectbox: null
+        }
+    });
+</script>
+</html>

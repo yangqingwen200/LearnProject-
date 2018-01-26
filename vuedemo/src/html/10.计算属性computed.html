@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="checkbox">
+        myValue1: <input type="text" v-model="myValue1"><br><br>
+        myValue: <input type="text" v-model="myValue"><br><br>
+        原始输入值: {{myValue}}<br><br>
+        使用computed剃掉数字: {{myValueNotNumber}}<br><br>
+        使用methods剃掉数字: {{getMyValueNotNumber()}}<br><br>
+        两者都可以完成剔除数字的功能, 但是二者有区别:<br>
+        当myValue的值不变化的时候, computed 的myValueNotNumber就不变化, 一直显示默认初始值<br>
+        但是methods的getMyValueNotNumber会一直调用<br><br>
+
+        当v-model绑定的data中值(myValue 或者 myValue1)有发生变化时, 不管变化的v-model绑定值与当前有没有关系, methods中的getMyValueNotNumber都会重新调用,
+    </div>
+
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: '#checkbox',
+        data: function () {
+            return {
+                myValue: "",
+                myValue1: ""
+            }
+        },
+        /*计算属性*/
+        computed: {
+            myValueNotNumber: function () {
+                return this.myValue.replace(/\d/g, ""); /*仅仅是当改变了v-model="myValue" 输入框里面的值, 才会重新调用*/
+                //return Date.now();
+            }
+        },
+        methods: {
+            getMyValueNotNumber: function () {
+                //return this.myValue.replace(/\d/g, "");
+                return Date.now(); /*不管是改变了myValue1 或者 myValue的值, 都会重新调用*/
+            }
+        }
+    });
+</script>
+</html>

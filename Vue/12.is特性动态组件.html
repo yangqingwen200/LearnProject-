@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-header></my-header>
+
+        <!-- 双向绑定,改变data中comToRenders的值, 使得<p>中的值对应发生变化 -->
+        <input type="text" v-model="comToRenders">
+
+        <p v-bind:is="comToRenders"></p><br><br>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    /*子组件*/
+    var childcomponent = {
+        template: '<p>this is child {{data1}} component...</p>',
+        data: function () {
+            return {
+                data1: "data111"
+            }
+        }
+    };
+
+    /*子组件*/
+    var childcomponent2 = {
+        template: '<p>this is child {{data2}} component...</p>',
+        data: function () {
+            return {
+                data2: "data222"
+            }
+        }
+    };
+
+    var app = new Vue({
+        el: "#app",
+        /* 引入组件 */
+        components: {
+            "my-header": childcomponent,
+            "my-header2": childcomponent2
+        },
+        data: {
+            comToRenders: "my-header"
+        }
+    });
+</script>
+</html>

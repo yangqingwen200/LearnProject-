@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace要跟接口名称的全类名一致 -->
+<mapper namespace="com.wen.bean.dynamic.UserDynamicMapper">
+
+	<select id="getUserWhere" resultType="com.wen.bean.dynamic.User">
+		select * from user
+		<where> <!-- 不用自己手动写where 1=1, 直接使用where标签即可, and 只能写在最前面 -->
+			<if test="id != null">
+				id = #{id}
+			</if>
+			<if test="name != null &amp; name != ''"> <!-- &amp; 为转义字符, &转义后的字符串 -->
+				and name like #{name}
+			</if>
+			<if test="age != null">
+				and age > #{age}
+			</if>
+		</where>
+	</select>
+	
+	<sql id="extractSql">
+		id, name, age, last_name
+	</sql>
+	
+	<select id="getUserSqlInclude" resultType="com.wen.bean.dynamic.User">
+		select <include refid="extractSql"></include> from user
+		<where> 
+			<if test="id != null">
+				id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<select id="getUserTrim" resultType="com.wen.bean.dynamic.User">
+		select * from user
+		<trim prefix="where" suffixOverrides="and">
+			<!-- 如果只有id有值, 会自动在id=#{id} 加上prefix指定值where, 并去掉 suffixOverrides指定值and -->
+			<if test="id != null">
+				id = #{id} and
+			</if>
+			<if test="name != null &amp; name != ''">
+				name like #{name} and
+			</if>
+			<if test="age != null">
+				age > #{age} and
+			</if>
+		</trim>
+	</select>
+
+	<select id="getUserChoose" resultType="com.wen.bean.dynamic.User">
+		select * from user
+		<where>
+			<choose>
+				<!-- 只会满足一个, 如果id满足了, 就算name也满足, 也不会拼接sql的,类似java中的switch case -->
+				<!-- 如果id和name值都不为空, 最终的sql也是 select * from user where id=xx -->
+				<when test="id != null">
+					id = #{id}
+				</when>
+				<when test="name != null">
+					name = #{name}
+				</when>
+				<otherwise><!-- 以上都不满足, 就拼接这个sql, 如果是1=1不写也行,默认会查询全部 -->
+					1=1
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+
+	<!-- <update id="updateUser"> update user <set> set 条件(lastName和lastName)至少要满足一个不为空,否则报错 
+		<if test="lastName != null"> last_name = #{lastName}, </if> <if test="name 
+		!= null"> name = #{name} </if> </set> where id = #{id} </update> -->
+
+	<update id="updateUser">
+		update user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="lastName != null">
+				last_name = #{lastName},
+			</if>
+			<if test="name != null">
+				name = #{name}
+			</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<!-- 方法: public List<User> getUserForeach(@Param("ids")List<Integer> ids); -->
+	<select id="getUserForeach" resultType="com.wen.bean.dynamic.User">
+		select * from user
+		<!-- collection：指定要遍历的集合： list类型的参数会特殊处理封装在map中，map的key就叫list item：将当前遍历出的元素赋值给指定的变量 
+			separator:每个元素之间的分隔符 open：遍历出所有结果拼接一个开始的字符 close:遍历出所有结果拼接一个结束的字符 index:索引。遍历list的时候是index就是索引，item就是当前值 
+			遍历map的时候index表示的就是map的key，item就是map的值 #{变量名}就能取出变量的值也就是当前遍历出的元素 -->
+		<foreach collection="ids" item="item_id" separator=","
+			open="where id in(" close=")" index="i">
+			#{item_id}
+		</foreach>
+	</select>
+
+
+	<!-- 批量保存 -->
+	<!--public void addEmps(@Param("emps")List<Employee> emps); -->
+
+	<!-- 第一种方式 -->
+	<!--MySQL下批量保存：可以foreach遍历 mysql支持values(),(),()语法 -->
+	<!-- <insert id="addEmps">
+		insert into tbl_employee(
+		<include refid="insertColumn"></include>
+		)
+		values
+		<foreach collection="emps" item="emp" separator=",">
+			(#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id})
+		</foreach>
+	</insert>
+ -->
+	<!-- 第二种方式 -->
+	<!-- 这种方式需要数据库连接属性allowMultiQueries=true；这种分号分隔多个sql可以用于其他的批量操作（删除，修改） -->
+	<!-- <insert id="addEmps"> <foreach collection="emps" item="emp" separator=";"> 
+		insert into tbl_employee(last_name,email,gender,d_id) values(#{emp.lastName},#{emp.email},#{emp.gender},#{emp.dept.id}) 
+		</foreach> </insert> -->
+
+
+	<!-- mybatis默认还有两个内置参数： _parameter:代表整个参数 
+		单个参数：_parameter就是这个参数 
+		多个参数：参数会被封装为一个map；_parameter就是代表这个map 
+		
+		_databaseId:如果配置了databaseIdProvider标签。 
+					_databaseId就是代表当前数据库的别名oracle -->
+					
+	<!--public List<Employee> getEmpsTestInnerParameter(Employee employee); -->
+	<!-- <select id="getEmpsTestInnerParameter" resultType="com.atguigu.mybatis.bean.Employee">
+		bind：可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量的值
+		<bind name="_lastName" value="'%'+lastName+'%'" />
+		<if test="_databaseId=='mysql'">
+			select * from tbl_employee
+			<if test="_parameter!=null">
+				where last_name like #{lastName}写成#{_parameter.lastName}也可以
+			</if>
+		</if>
+		<if test="_databaseId=='oracle'">
+			select * from employees
+			<if test="_parameter!=null">
+				where last_name like #{_parameter.lastName}写成#{lastName}也可以
+			</if>
+		</if>
+	</select> -->
+
+
+
+</mapper>

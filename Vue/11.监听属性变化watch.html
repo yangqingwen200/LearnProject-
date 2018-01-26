@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="checkbox">
+        myValue: <input type="text" v-model="myValue"><br><br>
+
+        <button type="button" v-on:click="changeList">ChangeListValue</button>
+        <button type="button" v-on:click="addList">AddListValue</button><br><br>
+        <select>
+            <option v-for="(opt, index) in optionsList" v-bind:value="opt.id">{{opt.text}}</option>
+        </select><br><br><br>
+    </div>
+
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: '#checkbox',
+        data: function () {
+            return {
+                myValue: "",
+                optionsList: [
+                    { id: 0, text: '蔬菜' },
+                    { id: 1, text: '奶酪' },
+                    { id: 2, text: '随便其他什么人吃的东西' }
+                ]
+            }
+        },
+        watch:{
+            myValue: function (newValue, oldValue) {
+                console.info("新值: " + newValue + " ,旧值: " + oldValue);
+            },
+
+            /*当data中的optionsList的值发生变化, 如:修改原始的值, 或者 增加选项, 都会触发下面事件*/
+            /*是改变下拉项的值, 而不是改变select下拉选项 onChange*/
+            optionsList: function () {
+                console.info("this optionsList value or list has change...");
+            }
+        },
+        methods: {
+            changeList: function () {
+                /*改变optionsList原有的值*/
+                Vue.set(this.optionsList, 1, {id: 6, text: 'Vue Set'});
+            },
+            addList: function () {
+                /*增加optionsList属性*/
+                this.optionsList.push({id: 3, text: "addList"});
+            }
+        }
+    });
+</script>
+</html>

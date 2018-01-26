@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wen.bean.fuzzyquery.userMapper">
+
+	<!-- 业务需求: 查询user表中name中含有"g",年龄在20到30岁之间 -->
+
+	<!-- parameterType为查询对象Condition -->
+	<!-- 占位符queryname/minAge/maxAge均为查询对象Condition中的属性-->
+	<select id="getQueryUser" parameterType="com.wen.bean.fuzzyquery.Condition" resultType="com.wen.bean.fuzzyquery.User">
+		select * from user where name like #{queryname} and age between #{minAge} and #{maxAge}
+	</select>
+	
+	<!-- 解决name为null的情况 -->
+	<!-- 当name为null的时候,模糊查询"%"+name+"%"=%null%  -->
+	<select id="getQueryNullUser" parameterType="com.wen.bean.fuzzyquery.Condition" resultType="com.wen.bean.fuzzyquery.User">
+		select * from user where 
+		<if test="queryname != '%null%'">
+			name like #{queryname} and
+		</if>
+		 age between #{minAge} and #{maxAge}
+	</select>
+
+</mapper>

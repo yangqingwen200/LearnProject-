@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wen.bean.onetoone.teacherclassMapper">
+
+	<!-- 业务需求: 班级和老师是一对一的关系.现在要根据班级的id,查询班级的信息和老师的信息 -->
+
+	<!-- 方法一: 联合查询 -->
+	
+	<!-- 当要注入的列名和类的属性名不一致的时候,可以采用给resultMap形式  -->
+	<select id="getClassTeacher" parameterType="int" resultMap="TeacherClass">
+		SELECT * FROM onetoone_class c JOIN onetoone_teacher t ON t.t_id=c.t_id WHERE t.t_id=#{id}
+	</select>
+	
+	<!-- type为返回的类对象 -->
+	<resultMap id="TeacherClass" type="com.wen.bean.onetoone.Class">
+		<!-- 主键列用<id> -->
+		<!-- property为类对象属性, column为列名 -->
+		<id property="id" column="c_id"/>
+		<result property="name" column="c_name"/>
+		
+		<!-- teacher为Class类中的属性 , javaType为属性teacher对应的类-->
+		<association property="teacher" javaType="com.wen.bean.onetoone.Teacher">
+			<id property="id" column="t_id"/>
+			<result property="name" column="t_name"/>
+		</association>
+	</resultMap>
+	
+	<!-- 方法二: 嵌套查询 -->
+	
+	<select id="getClass" parameterType="int" resultMap="TeacherClass2">
+		select * from onetoone_class where c_id=#{id}
+	</select>
+	
+	<!-- 只能采用别名的方式解决属性和列名不一致的问题, 这个查询器有可能其他的mapper中, 其他mapper也使用这个select, 复用 -->
+	<select id="getTeacher" resultType="com.wen.bean.onetoone.Teacher">
+		select t_id id, t_name name from onetoone_teacher where t_id=#{id}
+	</select>
+	
+	<resultMap id="TeacherClass2" type="com.wen.bean.onetoone.Class">
+		<id property="id" column="c_id"/>
+		<result property="name" column="c_name"/>
+		
+		<!-- select="getTeacher" 即调用select id为getTeacher这个 查询器, 如果这个查询器在其他mapper文件中,使用时需要加上mapper namespace -->
+		<!-- 在getTeacher查询里面需要输入一个参数值, column="t_id"就是这个输入的参数(可以理解为外键 ), t_id的值传给getTeacher-->
+		<!-- 属性和列名不一致,在getTeacher查询里面只能用别名的方式(t_id id), 不能用resultMap="xx"这种方式-->
+		<association property="teacher" column="t_id" select="getTeacher">
+		</association>
+	</resultMap>
+
+</mapper>

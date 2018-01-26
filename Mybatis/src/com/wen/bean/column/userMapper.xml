@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wen.bean.column.userMapper">
+
+	<!-- 当要注入的列名和类的属性名不一致的时候,可以采用给列名取别名-> order_id id -->
+	<select id="getOrder" parameterType="int" resultType="com.wen.bean.column.Order">
+		select order_id id, order_no no, order_price price from orders where order_id=#{id}
+	</select>
+	
+	<!-- 当要注入的列名和类的属性名不一致的时候,也可以采用给resultMap形式  -->
+	<select id="getOrder2" parameterType="int" resultMap="OrderMap">
+		select * from orders where order_id=#{id}
+	</select>
+	
+	<!-- type为返回的类对象, id为全局唯一 -->
+	<resultMap id="OrderMap" type="com.wen.bean.column.Order" >
+		<!-- 主键列用<id> -->
+		<!-- property为类对象属性, column为列名 -->
+		<id property="id" column="order_id"/>
+		
+		<!-- 其他列用<result> -->
+		<result property="no" column="order_no"/>
+		<result property="price" column="order_price"/>
+	</resultMap>
+
+</mapper>

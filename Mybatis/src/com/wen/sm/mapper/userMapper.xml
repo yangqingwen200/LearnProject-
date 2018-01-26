@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace必须是接口的全类名 -->
+<mapper namespace="com.wen.sm.mapper.UserMapper">
+
+	<!-- 保存user对象 -->
+	<!-- useGeneratedKeys="true"  keyProperty="id",保存user对象时,并把保存的id值返回,直接用getId(),获得刚刚保存的对象在数据库中的id值 -->
+	<insert id="insert" parameterType="User" useGeneratedKeys="true"  keyProperty="id">
+		insert into smuser (name, birth, age) value (#{name}, #{birth}, #{age});
+	</insert>
+
+</mapper>

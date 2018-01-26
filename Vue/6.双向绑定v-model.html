@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!--p标签的显示的值会随着input输入的内容而改变, v-html 如果输入<hr>, 则会显示一条直线-->
+        <p v-html="message"></p>
+        <input v-model="message">
+        <input v-model.trim="message">
+        <input v-model.number="message">
+<br>
+        {{status ? "status is true" : "status is false"}}
+<br>
+        {{isLogin ? "is login" : "yet no login"}}
+    </div>
+
+
+</body>
+<script type="text/javascript">
+
+    /* 数据双向绑定v-model,  */
+    var app = new Vue({
+        el: "#app",
+        data: {
+            message: "this is content...",
+            status: true,
+            isLogin: false
+        }
+    });
+
+</script>
+</html>

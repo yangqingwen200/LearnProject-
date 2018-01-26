@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wen.bean.userMapper">
+
+	<!-- 这里给包取别名package name="com.wen.bean"/>,所以  resultType="User"才能使用User-->
+	<select id="getUser" parameterType="int" resultType="User">
+		select * from user where id = #{id}
+	</select>
+</mapper>

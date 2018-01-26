@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-header></my-header>
+        {{content}}
+    </div>
+
+</body>
+<script type="text/javascript">
+
+    /*子组件组件: 组件没必要使用全局组件*/
+    var childcomponent = {
+        template: '<p>this is child {{data1}} component...</p>',
+        data: function () {  //所有子组件都是共享一份, 所以data采用function return形式, 避免父组件A改变了子组件, 影响父组件B中子组件的值
+            return {
+                data1: "data111",
+                data2: "data222"
+            }
+        }
+    }
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            content: "this is content..."
+        },
+        components: {
+            "my-header": childcomponent
+        }
+    });
+
+
+</script>
+</html>
