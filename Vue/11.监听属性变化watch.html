@@ -9,8 +9,8 @@
     <div id="checkbox">
         myValue: <input type="text" v-model="myValue"><br><br>
 
-        <button type="button" v-on:click="changeList">ChangeListValue</button>
-        <button type="button" v-on:click="addList">AddListValue</button><br><br>
+        <button type="button" v-on:click="changeList">修改下拉项</button>
+        <button type="button" v-on:click="addList">增加下拉项</button><br><br>
         <select>
             <option v-for="(opt, index) in optionsList" v-bind:value="opt.id">{{opt.text}}</option>
         </select><br><br><br>
@@ -26,11 +26,12 @@
                 optionsList: [
                     { id: 0, text: '蔬菜' },
                     { id: 1, text: '奶酪' },
-                    { id: 2, text: '随便其他什么人吃的东西' }
+                    { id: 2, text: '果汁' }
                 ]
             }
         },
         watch:{
+            //监听data中的myValue变化
             myValue: function (newValue, oldValue) {
                 console.info("新值: " + newValue + " ,旧值: " + oldValue);
             },
@@ -44,11 +45,11 @@
         methods: {
             changeList: function () {
                 /*改变optionsList原有的值*/
-                Vue.set(this.optionsList, 1, {id: 6, text: 'Vue Set'});
+                Vue.set(this.optionsList, 1, {id: 6, text: '奶酪_修改'});
             },
             addList: function () {
                 /*增加optionsList属性*/
-                this.optionsList.push({id: 3, text: "addList"});
+                this.optionsList.push({id: 3, text: "糖果"});
             }
         }
     });
