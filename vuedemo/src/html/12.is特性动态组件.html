@@ -7,17 +7,18 @@
 </head>
 <body>
     <div id="app">
-        <my-header></my-header>
+        组件名: my-header  <my-header></my-header>
+        组件名: my-header2  <my-header2></my-header2>
 
-        <!-- 双向绑定,改变data中comToRenders的值, 使得<p>中的值对应发生变化 -->
+        <!-- 双向绑定, 改变data中comToRenders的值, 使得<p>中的值对应发生变化 -->
+        <!-- input输入组件名, 改变comToRenders的值-->
         <input type="text" v-model="comToRenders">
 
+        <!-- 显示 输入哪个组件名, 就显示哪个组件的内容 -->
         <p v-bind:is="comToRenders"></p><br><br>
     </div>
-
 </body>
 <script type="text/javascript">
-
     /*子组件*/
     var childcomponent = {
         template: '<p>this is child {{data1}} component...</p>',
@@ -27,7 +28,6 @@
             }
         }
     };
-
     /*子组件*/
     var childcomponent2 = {
         template: '<p>this is child {{data2}} component...</p>',
@@ -37,7 +37,6 @@
             }
         }
     };
-
     var app = new Vue({
         el: "#app",
         /* 引入组件 */

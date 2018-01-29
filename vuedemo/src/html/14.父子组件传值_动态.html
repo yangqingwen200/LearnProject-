@@ -7,7 +7,6 @@
 </head>
 <body>
     <div id="app">
-
         <p style="color: red">
             子组件标签中的属性key, 不支持驼峰写法, 需使用 - 连接, 属性值value采用驼峰标识写法,  而标签中取值, 采用的驼峰标识, <br>就算props中定义属性采用驼峰标识, 在写标签中属性, 也要采用 - 形式<br>
             props中定义了childToFather或者child-to-father, 在标签属性中key也要使用child-to-father, 然而取值均采用{&nbsp;{childToFather}&nbsp;} 形式<br><br>
@@ -15,26 +14,17 @@
         </p>
 
         使用v-model双向绑定:
-        <input type="text" v-model="numberToChildsss">
-
+        <input type="text" v-model="numberToChildren">
         <!-- 父组件传值给子组件props中的number-to-child -->
-        <my-header v-bind:number-to-child="numberToChildsss"></my-header>
+        <my-header v-bind:number-to-child="numberToChildren"></my-header>
     </div>
-
 </body>
 <script type="text/javascript">
-
     /* 子组件 */
     var childcomponent = {
         template: '<p> number-to-child的值--注意采用驼峰标识: {{numberToChild}}</p>',
-
         props: {
             "number-to-child": [Number, String, Object] /* 可以接受三种数据类型 */
-        },
-        data: function () {
-            return {
-                data1: "data1" /* 在props中定义的属性, 相当于在这里也定义了一份, 只是props中定义的属性可以在父组件中传递进来 */
-            }
         }
     };
 
@@ -46,7 +36,7 @@
         },
         data: function () {
             return {
-                "numberToChildsss": ""
+                "numberToChildren": ""
             }
         }
     });

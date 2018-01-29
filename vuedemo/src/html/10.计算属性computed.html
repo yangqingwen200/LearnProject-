@@ -13,10 +13,10 @@
         使用computed剃掉数字: {{myValueNotNumber}}<br><br>
         使用methods剃掉数字: {{getMyValueNotNumber()}}<br><br>
         两者都可以完成剔除数字的功能, 但是二者有区别:<br>
-        当myValue的值不变化的时候, computed 的myValueNotNumber就不变化, 一直显示默认初始值<br>
+        当myValue的值不变化的时候, computed 的myValueNotNumber就不变化<br>
         但是methods的getMyValueNotNumber会一直调用<br><br>
 
-        当v-model绑定的data中值(myValue 或者 myValue1)有发生变化时, 不管变化的v-model绑定值与当前有没有关系, methods中的getMyValueNotNumber都会重新调用,
+        当v-model绑定data中值(myValue 或者 myValue1)有发生变化时, 不管变化的v-model绑定值与当前有没有关系, methods中的getMyValueNotNumber都会重新调用,
     </div>
 
 </body>

@@ -8,10 +8,9 @@
 <body>
     <div id="counter-event-example">
         <p>{{ total }}</p>
-        <button-counter v-on:increments="incrementTotal"></button-counter>
-        <button-counter v-on:increments="incrementTotal"></button-counter>
+        <button-counter v-on:increments="incrementTotal('abc')"></button-counter>
+        <button-counter v-on:increments="incrementTotal(456)"></button-counter>
     </div>
-
 </body>
 <script type="text/javascript">
     Vue.component('button-counter', {
@@ -24,7 +23,8 @@
         methods: {
             increment: function () {
                 this.counter += 1;
-                this.$emit('increments');
+                //$emit触发当前实例上的事件。附加参数都会传给监听器回调
+                this.$emit('increments'); //触发绑定increments事件
             }
         }
     });
@@ -35,7 +35,8 @@
             total: 0
         },
         methods: {
-            incrementTotal: function () {
+            incrementTotal: function (args) {
+                console.info(args);
                 this.total += 1
             }
         }

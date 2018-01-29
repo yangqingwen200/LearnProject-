@@ -8,16 +8,15 @@
 <body>
     <div id="app">
         <!-- 父组件传值给子组件props中的number-to-child -->
-
         <p style="color: red">
-            子组件标签中的属性key, 不支持驼峰写法, 需使用 - 连接, 属性值value采用驼峰标识写法,  而标签中取值, 采用的驼峰标识, <br>就算props中定义属性采用驼峰标识, 在写标签中属性, 也要采用 - 形式<br>
+            子组件标签中的属性key, 不支持驼峰写法, 需使用 - 连接, 属性值value采用驼峰标识写法,  而标签中(就是两个花括号取值)取值, 采用的驼峰标识, <br>就算props中定义属性采用驼峰标识, 在写标签中属性, 也要采用 - 形式<br>
             props中定义了childToFather或者child-to-father, 在标签属性中key也要使用child-to-father, 然而取值均采用{&nbsp;{childToFather}&nbsp;} 形式<br><br>
             举例: &lt;my-header number-to-child="childToFather"&gt;{&nbsp;{childToFather}&nbsp;}&lt;/my-header&gt;
         </p>
 
         <my-header number-to-child="98" number1="30"></my-header>
+        <span>{{parentData}}</span>
     </div>
-
 </body>
 <script type="text/javascript">
 
@@ -47,6 +46,11 @@
         el: "#app",
         components: {
             "my-header": childcomponent
+        },
+        data: function () {
+            return {
+                "parentData": "a1234"
+            }
         }
     });
 </script>
