@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="js/vue.js"></script>
+  <script src="../../node_modules/vue/dist/vue.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -15,6 +15,8 @@
 <script type="text/javascript">
 
     /*子组件组件: 组件没必要使用全局组件*/
+    /*2.0 子组件template如果有两个标签以上, 最外面必须包含一个div, 如<template><p>aa</p><span></span></template>, 则在p和span外面必须要包含一个div顶级标签
+    正确的写法: <template><div><p>aa</p><span></span></template></div>*/
     var childcomponent = {
         template: '<p>this is child {{data1}} component...</p>',
         data: function () {  //所有子组件都是共享一份, 所以data采用function return形式, 避免父组件A改变了子组件, 影响父组件B中子组件的值

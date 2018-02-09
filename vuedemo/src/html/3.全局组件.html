@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="js/vue.js"></script>
+  <script src="../../node_modules/vue/dist/vue.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -15,6 +15,9 @@
 <script type="text/javascript">
 
     /*全局组件: 注意要放在最前面, 否则无法渲染*/
+
+    /*2.0 子组件template如果有两个标签以上, 最外面必须包含一个div, 如<template><p>aa</p><span></span></template>, 则在p和span外面必须要包含一个div顶级标签
+    正确的写法: <template><div><p>aa</p><span></span></template></div>*/
     Vue.component('my-header', {
         template: '<p>this is my header...</p>'
     });

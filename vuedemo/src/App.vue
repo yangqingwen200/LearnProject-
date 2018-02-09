@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app">  <!-- div id的值要和index.html中div id值相同, 即都为app -->
     <img src="./assets/logo.png">
     <div class="cen">
 
@@ -7,9 +7,9 @@
       <router-link :to="{name: 'home'}">Home</router-link>
 
 
-      <router-link to="/apple/Red">Red Apple</router-link>
+      <router-link to="/apple/Red?id=123">Red Apple</router-link>
 
-      <router-link to="/apple/Green">Green Apple</router-link>
+      <router-link to="/apple/Green?name='yang'">Green Apple</router-link>
 
       <!-- banana为router/index.js文件中routes对象中使用path定义过(好像不要带/) -->
       <router-link :to="{path: '/banana'}">Banana</router-link>
