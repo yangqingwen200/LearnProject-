@@ -29,7 +29,8 @@
                 myValue1: ""
             }
         },
-        /*计算属性*/
+        /*计算属性: 相当于在data中放了一份, 这种形式, 可以写函数来改变值,*/
+        /* 定义属性的三种方式: data pros computed */
         computed: {
             myValueNotNumber: function () {
                 return this.myValue.replace(/\d/g, ""); /*仅仅是当改变了v-model="myValue" 输入框里面的值, 才会重新调用*/

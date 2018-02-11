@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Router from 'vue-router' // 自动补全的扩展名 extensions: ['.js', '.vue', '.json']
+import HelloWorld from '@/components/HelloWorld' //@等价于 /src 这个目录
 import Apple from '@/components/Apple'
 import Banana from '@/components/Banana'
 import BananaChild from '@/components/BananaChild'

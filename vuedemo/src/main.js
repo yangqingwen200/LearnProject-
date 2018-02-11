@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './vuex'
+import iView from './iview'
+import axios from './axios'
 
 Vue.config.productionTip = false;
 
@@ -13,5 +15,5 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })

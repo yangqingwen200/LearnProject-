@@ -1,15 +1,13 @@
 <template>
-  <div id="app">  <!-- div id的值要和index.html中div id值相同, 即都为app -->
+  <div id="app">
     <img src="./assets/logo.png">
     <div class="cen">
-
       <!-- name为router/index.js文件中routes对象中使用name定义过 -->
       <router-link :to="{name: 'home'}">Home</router-link>
 
+      <router-link to="/apple/Red">Red Apple</router-link>
 
-      <router-link to="/apple/Red?id=123">Red Apple</router-link>
-
-      <router-link to="/apple/Green?name='yang'">Green Apple</router-link>
+      <router-link to="/apple/Green">Green Apple</router-link>
 
       <!-- banana为router/index.js文件中routes对象中使用path定义过(好像不要带/) -->
       <router-link :to="{path: '/banana'}">Banana</router-link>
@@ -25,7 +23,7 @@
 
     <div style="margin-top: 50px">
       以下是测试Vuex相关知识, 点击按钮的执行顺序, 请看控制台输出<br>
-      {{total}}
+      {{total}} {{totalParam}}
       <Vuex_1></Vuex_1>
       <Vuex_2></Vuex_2>
 
@@ -34,34 +32,60 @@
 </template>
 
 <script>
-import Vuex_1 from './components/Vuex_1.vue';
-import Vuex_2 from './components/Vuex_2.vue';
-export default {
-  name: 'app',
+  import Vuex_1 from './components/Vuex_1.vue';
+  import Vuex_2 from './components/Vuex_2.vue';
 
-
-  /*测试Vuex相关知识才引入的组件*/
-  components: {Vuex_1, Vuex_2}, /*添加两个组件*/
-  computed: {
+  export default {
+    name: 'app',
+    /*测试Vuex相关知识才引入的组件*/
+    components: {Vuex_1, Vuex_2}, /*添加两个组件*/
+    computed: {
       total: function () { //监听值变化
         console.info("computed total");
         console.info("");
         //return this.$store.state.totalPrice // 第一种方式: 从$store的state中直接取值,
         return this.$store.getters.getTotalPrice // 第二种方式: 调用$store getters中的对应方法
+      },
+      totalParam: function () { //监听值变化
+        this.$store.commit("setUniPrice", 20);
+        var total = this.$store.getters.getUniPrice;
+        console.info(total);
+        return this.$store.getters.getTodoById  // 第二种方式: 调用$store getters中的对应方法
       }
+    },
+    methods: {
+      init() {
+        let _this = this;
+        let data = {
+          limit: 15,
+          offset: 0,
+          sort: 'id',
+          order: 'asc'
+        };
+        this.$http.post('/front/business/kesan/lit.html', data).then((response) => {
+          console.info(response.data.total);
+          console.info(response.data.rows);
+        }).catch((error) => {
+          _this.$Message.error('Fail!');
+        });
+      }
+    },
+    mounted() {
+      this.init();
+    }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
+
   .cen {
     text-align: center;
   }

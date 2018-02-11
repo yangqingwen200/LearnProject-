@@ -15,7 +15,7 @@ export default {
   methods: {
     addFive: function () {
       console.info("vue_2 add");
-      this.$store.dispatch("increments", this.price); //调用vuex/index.js文件中actions中increments方法
+      this.$store.dispatch("increments", this.price).then(()=>{console.info("等increments 执行完毕, 才执行then里面代码")}); //调用vuex/index.js文件中actions中increments方法
     },
     deleteFive: function () {
       console.info("vue_2 delete");

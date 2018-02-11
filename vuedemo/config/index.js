@@ -1,4 +1,3 @@
-
 'use strict'
 // Template version: 1.1.3
 // see http://vuejs-templates.github.io/webpack for documentation.
@@ -28,10 +27,17 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: process.env.PORT || 80,
-    autoOpenBrowser: true,
+    autoOpenBrowser: false, //启动完毕是否自动打开浏览器
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    //匹配代理的url
+    proxyTable: {
+      '/front': {
+        target: 'http://localhost:8080',  // 目标服务器地址
+        pathRewrite: {'^/front': '/'},  //路径重写
+        changeOrigin: true
+      }
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

@@ -26,13 +26,17 @@
                     'number1的值: {{number1}}</p>',
 
         /* 写了props, 相当于在data{} 中定义了属性一样, 可以在父组件中传值进来给子组件*/
+      /* 定义属性的三种方式: data pros computed */
 
         // props: ["number-to-child", "number1"], 第一种写法, 采用数组的形式, 比较简单
         props: {
-
             /* Number说明只能接受数字类型, 在html中, 数值都会转成字符类型再传值, 所以98会被转成字符串, 而这里规定只能为数字类型, 所以控制台报错:Expected Number, got String */
             "number-to-child": Number,
             "number1": [Number, String, Object] /* 可以接受三种数据类型 */
+            "number2" : {
+              type: Number,  //指定类型
+              default: 200 //默认值, 如果父组件没有传值给子组件, 就使用默认值
+            }
         },
         data: function () {
             return {
