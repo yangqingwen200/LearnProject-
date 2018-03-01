@@ -64,11 +64,11 @@ module.exports = merge(webpackBaseConfig, {
         stats: { colors: true },
         proxy: {
             //匹配代理的url
-            '/api': {
+            '/front': {
             // 目标服务器地址
-              target: 'http://127.0.0.1:8080',
+              target: 'http://localhost:8080/',
               //路径重写
-              pathRewrite: {'^/api' : '/'},
+              pathRewrite: {'^/front':'/front'},
               changeOrigin: true
             }
          }

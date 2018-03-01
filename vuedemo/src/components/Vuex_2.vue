@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button v-on:click="addFive">Add Five</button>
-    <button v-on:click="deleteFive">Delete Five</button>
+    <Button type="success" v-on:click="addFive">Add Five</Button>
+    <Button type="error" v-on:click="deleteFive">Delete Five</Button>
   </div>
 </template>
 <script>

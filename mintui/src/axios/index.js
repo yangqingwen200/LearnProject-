@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
+import {Toast} from 'mint-ui'
 
 Vue.prototype.$http = axios;
 
 axios.defaults.timeout = 10000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';  //配置请求头
-axios.defaults.baseURL = 'http://192.168.1.181:8080';   //配置接口地址
+axios.defaults.baseURL = 'http://192.168.1.247:8080';   //配置接口地址
 
 //添加请求拦截器(在发送请求之前做某件事)
 axios.interceptors.request.use((config) => {
@@ -25,6 +26,11 @@ axios.interceptors.response.use((res) =>{
   }*/
   return res;
 }, (error) => {
+  Toast({
+    message: '网络错误...',
+    position: 'middle',
+    duration: 2000
+  });
   return Promise.reject(error);
 });
 
@@ -42,27 +48,25 @@ export function fetch(url, params) {
       })
   })
 };
-/*
 
 export default {
-  /!**
+  /**
    * 用户登录
-   *!/
+   */
   Login(params) {
-    return fetch('/users/api/userLogin', params)
+    return fetch('/app/login_appUser.do', params)
   },
-  /!**
+  /**
    * 用户注册
-   *!/
+   */
   Regist(params) {
     return fetch('/users/api/userRegist', params)
   },
-  /!**
+  /**
    * 发送注册验证码
-   *!/
+   */
   RegistVerifiCode(tellphone) {
     return fetch('/users/api/registVerifiCode', {tellphone: tellphone})
   }
 }
-*/
 

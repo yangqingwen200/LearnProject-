@@ -25,9 +25,10 @@
       以下是测试Vuex相关知识, 点击按钮的执行顺序, 请看控制台输出<br>
       {{total}} {{totalParam}}
       <Vuex_1></Vuex_1>
+      <br>
       <Vuex_2></Vuex_2>
-
     </div>
+    <br>
   </div>
 </template>
 
@@ -62,7 +63,7 @@
           sort: 'id',
           order: 'asc'
         };
-        this.$http.post('/front/business/kesan/lit.html', data).then((response) => {
+        this.$http.post('/front/business/kesan/list.html', data).then((response) => {
           console.info(response.data.total);
           console.info(response.data.rows);
         }).catch((error) => {

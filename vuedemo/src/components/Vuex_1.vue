@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button v-on:click="addOne">Add One</button>
-    <button v-on:click="deleteOne">Delete One</button>
+    <Button type="primary" v-on:click="addOne">Add One</Button>
+    <Button type="warning" v-on:click="deleteOne">Dec One</Button>
   </div>
 </template>
 <script>

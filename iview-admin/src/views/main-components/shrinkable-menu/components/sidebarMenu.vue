@@ -42,6 +42,7 @@ export default {
     },
     methods: {
         changeMenu (active) {
+            console.info("changeMenu");
             this.$emit('on-change', active);
         },
         itemTitle (item) {
