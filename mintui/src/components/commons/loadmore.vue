@@ -1,7 +1,9 @@
 <template>
   <!-- 加载组件url: https://www.cnblogs.com/yuri2016/p/7045709.html -->
   <div class="page-loadmore">
-    <div class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
+    <slot name="viewSearchBar">
+    </slot>
+    <div id="loadMoreWrapper" class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
       <mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"
                    :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded"
                    ref="loadmore" :top-drop-text="topDropText" :bottom-pull-text="bottomPullText"
@@ -23,10 +25,6 @@
         default: '上拉加载'
       },
       bottomDropText: '释放加载',
-      allLoaded: false,
-      list: {
-        type: Array
-      },
       reqParamInit: { //分页默认请求服务器的参数
         type: Object,
         default() {
@@ -52,6 +50,7 @@
         topStatus: '',
         translate: 0,
         moveTranslate: 0,
+        allLoaded: false,
       }
     },
     methods: {
@@ -83,14 +82,26 @@
         }, 1000);
       },
       init() {
+        document.getElementById('loadMoreWrapper').scrollTop = 0;
         this.allLoaded = false;
         this.reqParamInit.pageNow = 1;
         this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
+      },
+      changeAllLoaded() {
+        this.allLoaded = true;
       }
     },
     mounted() {
       this.init();
       this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    },
+    watch: {
+      'reqParamAdd': { //监听请求服务器额外的参数(一般搜索栏), 变化后重新发起请求
+        handler(newValue, oldValue) {
+          this.init();
+        },
+        deep: true
+      }
     }
   };
 </script>

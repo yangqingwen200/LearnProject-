@@ -1,14 +1,16 @@
 <template>
   <div>
-    <load-more :all-loaded="allLoaded" @get-server-data="getServerData" :list="list"
-               :req-param-add="reqParamAdd">
-
+    <load-more ref="children" @get-server-data="getServerData" :req-param-add="reqParamAdd">
+      <div slot="viewSearchBar" style="margin-bottom: 10px;">
+        筛选: <input type="text" style="border: 2px solid #e2e2e4;border-radius:7px;line-height: 2.0;" v-model="reqParamAdd.name" placeholder="请输入姓名..."/>
+      </div>
       <div slot="viewTemplate">
         <ul style="margin: 0;padding: 0">
           <li v-for="item in list">
             <table border="0" style="width: 100%">
               <tr>
-                <td rowspan="5" style="width: 35%;padding-right: 20px;padding-left: 15px"><img src="../../assets/logo.png" style="width: 100%"/></td>
+                <td rowspan="5" style="width: 35%;padding-right: 20px;padding-left: 15px"><img
+                  src="../../assets/logo.png" style="width: 100%"/></td>
               </tr>
               <tr>
                 <td>姓名: <span v-text="item.acName"></span>
@@ -25,7 +27,6 @@
                 </td>
               </tr>
               <tr>
-                <!--<td colspan="2">银行卡: <span v-text="item.acNo | dealChar"></span></td>-->
                 <td colspan="2">银行卡: {{item.acNo | dealChar}}</td>
               </tr>
               <tr>
@@ -39,8 +40,10 @@
             </table>
           </li>
         </ul>
+        <div v-if="list.length === 0" style="color: grey;text-align: center; margin-top: 50%">
+          暂无数据...
+        </div>
       </div>
-
     </load-more>
   </div>
 </template>
@@ -52,11 +55,12 @@
   export default {
     data() {
       return {
-        allLoaded: false,
+        name: '',
         list: [],
         reqParamAdd: {
-          pageSize: 10
-        }
+          pageSize: 10,
+          name: ''
+        },
       };
     },
     components: {
@@ -78,23 +82,17 @@
             } else {
               this.list = this.list.concat(response.data.list);
             }
+            if (response.data.pageNow === response.data.pageCount) {
+              this.$refs.children.changeAllLoaded();
+            }
           }
-          if (reqParam.pageNow === response.data.pageCount) {
-            this.allLoaded = true;
-          }
-          Toast({
-            message: reqParam.pageNow + " / " + response.data.pageCount,
-            position: 'bottom',
-            duration: 1000
-          });
         }.bind(this));
-      }
+      },
     },
     mounted() {
-    }
+    },
   };
 </script>
 
 <style scoped>
-
 </style>

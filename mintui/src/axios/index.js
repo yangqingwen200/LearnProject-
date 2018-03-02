@@ -20,11 +20,24 @@ axios.interceptors.request.use((config) => {
 });
 
 //添加响应拦截器
-axios.interceptors.response.use((res) =>{
-  /*if(!res.data.success){  //返回状态判断
-    return Promise.reject(res);
-  }*/
-  return res;
+axios.interceptors.response.use((response) =>{
+  if(response.data.code != 1000) { //返回状态判断
+    Toast({
+      message: response.data.msg,
+      position: 'middle',
+      duration: 2000
+    });
+  } else {
+    if(response.data.hasOwnProperty('pageNow') && response.data.hasOwnProperty('pageCount')) {
+      //说明是分页调用, 友好显示当前页和总页数
+      Toast({
+        message: response.data.pageNow + " / " + response.data.pageCount,
+        position: 'bottom',
+        duration: 1000
+      });
+    }
+  }
+  return response;
 }, (error) => {
   Toast({
     message: '网络错误...',

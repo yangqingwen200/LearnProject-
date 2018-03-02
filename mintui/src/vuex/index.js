@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     totalPrice: 0,
     tabIndex: 0,
+    allLoaded: false //分页是否全部加载完毕
   },
   getters: {
     getTotalPrice: function (state) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
   },
   mutations: { //必须是同步操作, 无法调用后台接口
+    modAllLoaded(state, flag) {
+      state.allLoaded = flag;
+    },
     increment (state, price) {
       console.info("mutations increment: " + price);
       state.totalPrice += price; //在vuex_1.vue中调用increment
