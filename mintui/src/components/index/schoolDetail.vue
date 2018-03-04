@@ -23,7 +23,7 @@
       return {
         detail: {},
         inputStyle: {
-          fontSize: '14px',
+          fontSize: '1rem',
           fontWeight: 'bold'
         },
       }
@@ -55,7 +55,7 @@
 
 <style scoped>
   .show {
-    padding: 50px;
+    padding: 3rem;
     top: 80%;
   }
 </style>

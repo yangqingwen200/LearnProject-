@@ -1,8 +1,9 @@
 <template>
   <div>
     <load-more ref="children" @get-server-data="getServerData" :req-param-add="reqParamAdd">
-      <div slot="viewSearchBar" style="margin-bottom: 10px;">
-        筛选: <input type="text" style="border: 2px solid #e2e2e4;border-radius:7px;line-height: 2.0;" v-model="reqParamAdd.name" placeholder="请输入姓名..."/>
+      <div slot="viewSearchBar" class="searchBarSlot">
+        <img style="display: inline-block; vertical-align: middle;" src="../../assets/search.png"/>
+        <input type="text" class="searchBarSlotInput" v-model="reqParamAdd.name" placeholder="请输入姓名..."/>
       </div>
       <div slot="viewTemplate">
         <ul style="margin: 0;padding: 0">
@@ -40,7 +41,7 @@
             </table>
           </li>
         </ul>
-        <div v-if="list.length === 0" style="color: grey;text-align: center; margin-top: 50%">
+        <div v-if="list.length === 0" style="color: grey;text-align: center; margin-top: 40%">
           暂无数据...
         </div>
       </div>
@@ -49,8 +50,7 @@
 </template>
 
 <script type="text/babel">
-  import loadMore from '../commons/loadmore'
-  import {Toast} from 'mint-ui'
+  import loadMore from '../commons/loadMore'
 
   export default {
     data() {
@@ -95,4 +95,21 @@
 </script>
 
 <style scoped>
+  .searchBarSlot {
+    padding: 0.31rem 0 0.31rem 0.63rem;
+    margin-bottom: 0.63rem;
+    background-color: #e0e0e0;
+    border-radius: 1rem;
+    width: 95%;
+    vertical-align: middle;
+  }
+
+  .searchBarSlotInput {
+    border: none;
+    height: 1rem;
+    font-size: 1rem;
+    background-color: transparent;
+    width: 80%;
+    margin-left: 0.18rem;
+  }
 </style>

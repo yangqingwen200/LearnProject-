@@ -1,31 +1,26 @@
 <template>
   <div>
     <div class="page-swipe">
-      <mt-swipe :auto="3000" :show-indicators="true">
+      <mt-swipe :auto="0" :show-indicators="true">
         <mt-swipe-item>
-          <div>
-            <img src="../../assets/1.jpg" :class="{imgSize: true}"/>
-          </div>
+          <img src="../../assets/1.jpg" :class="{imgSize: true}"/>
         </mt-swipe-item>
         <mt-swipe-item>
-          <div>
-            <img src="../../assets/2.jpg" :class="{imgSize: true}"/>
-          </div>
+          <img src="../../assets/2.jpg" :class="{imgSize: true}"/>
         </mt-swipe-item>
         <mt-swipe-item>
-          <div>
-            <img src="../../assets/3.jpg" :class="{imgSize: true}"/>
-          </div>
+          <img src="../../assets/3.jpg" :class="{imgSize: true}"/>
         </mt-swipe-item>
       </mt-swipe>
     </div>
     <div>
-      <span style="font-weight: bold;margin-bottom: 5px">精选驾校</span>
+      <span style="font-weight: bold;margin-bottom: 0.31rem">精选驾校</span>
       <ul style="margin:0;padding:0">
         <li v-for="item in school" style="list-style-type:none;" @click="schoolDetail(item.id)">
-          <table style="padding: 2px;">
+          <table style="padding: 0.125rem;">
             <tr>
-              <td rowspan="3" style="width: 25%;padding-right: 15px"><img src="../../assets/logo.png" style="width: 100%"/></td>
+              <td rowspan="3" style="width: 25%;padding-right: 1rem"><img src="../../assets/logo.png"
+                                                                          style="width: 100%"/></td>
               <td colspan="2">驾校: <span v-text="item.name"></span></td>
             </tr>
             <tr>
@@ -37,7 +32,7 @@
             </tr>
             <tr>
               <td colspan="3">
-                <hr style="border:1px dotted #036"/>
+                <hr style="border: 0.06rem dotted #036"/>
               </td>
             </tr>
           </table>
@@ -82,21 +77,21 @@
 
 <style scoped>
   .page-swipe .mint-swipe {
-    height: 200px;
+    height: 12.5rem;
     color: #fff;
-    font-size: 30px;
+    font-size: 1.87rem;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
   }
 
   .page-swipe .mint-swipe-item {
-    line-height: 200px;
+    line-height: 12.5rem;
   }
 
   .page-swipe-desc {
     text-align: center;
     color: #666;
-    margin-bottom: 5px;
+    margin-bottom: 0.31rem;
   }
 
   .imgSize {

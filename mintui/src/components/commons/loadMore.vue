@@ -1,9 +1,14 @@
 <template>
   <!-- 加载组件url: https://www.cnblogs.com/yuri2016/p/7045709.html -->
   <div class="page-loadmore">
-    <slot name="viewSearchBar">
-    </slot>
-    <div id="loadMoreWrapper" class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
+    <transition name="fade">
+      <div v-show="showSearchBar">
+        <slot name="viewSearchBar">
+        </slot>
+      </div>
+    </transition>
+
+    <div id="loadMoreWrapper" class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'rem' }">
       <mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"
                    :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded"
                    ref="loadmore" :top-drop-text="topDropText" :bottom-pull-text="bottomPullText"
@@ -12,6 +17,9 @@
         <slot name="viewTemplate">
         </slot>
       </mt-loadmore>
+      <div v-show="allLoaded && reqParamInit.pageNow != 1" style="color: grey;text-align: center;">
+        没有更多数据...
+      </div>
     </div>
   </div>
 </template>
@@ -19,12 +27,18 @@
 <script type="text/babel">
   export default {
     props: {
-      topDropText: '释放刷新', //写成这样, 在methods中, this.topDropText是拿不到值
+      topDropText: {
+        type: String,
+        default: '释放刷新'
+      },
       bottomPullText: { //这样可以 在methods中, this.topDropText可以拿到值
         type: String,
         default: '上拉加载'
       },
-      bottomDropText: '释放加载',
+      bottomDropText: {
+        type: String,
+        default: '释放加载'
+      },
       reqParamInit: { //分页默认请求服务器的参数
         type: Object,
         default() {
@@ -51,6 +65,8 @@
         translate: 0,
         moveTranslate: 0,
         allLoaded: false,
+        scroll: 0,
+        showSearchBar: true,
       }
     },
     methods: {
@@ -87,13 +103,25 @@
         this.reqParamInit.pageNow = 1;
         this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
       },
+      scrollEve() {
+        let after = document.getElementById('loadMoreWrapper').scrollTop;
+        if(this.scroll - after > 0) {
+          this.showSearchBar = true; //向上滑动, 隐藏搜索栏
+        } else {
+          this.showSearchBar = false; //向下滑动, 显示搜索栏
+        }
+        this.scroll = after;
+      },
       changeAllLoaded() {
-        this.allLoaded = true;
+        this.allLoaded = true; //当前页为最后一页, 禁止上拉加载
       }
     },
     mounted() {
       this.init();
-      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+      this.wrapperHeight = (document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top)/16;
+      if(typeof this.$slots.viewSearchBar !== 'undefined') { //有搜索栏才添加滚动事件, 通过是否有viewSearchBar插槽判断
+        document.getElementById('loadMoreWrapper').addEventListener('scroll', this.scrollEve); //添加监听滑动事件
+      }
     },
     watch: {
       'reqParamAdd': { //监听请求服务器额外的参数(一般搜索栏), 变化后重新发起请求
@@ -107,6 +135,17 @@
 </script>
 
 <style scoped>
+  .fade-enter-active {
+    transition: opacity 1s;
+  }
+  .fade-leave-active {
+    transition: opacity .5s;
+  }
+
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+
   .loading-background, .mint-loadmore-top span {
     -webkit-transition: .2s linear;
     transition: .2s linear
@@ -125,27 +164,6 @@
   .page-loadmore .mint-spinner {
     display: inline-block;
     vertical-align: middle
-  }
-
-  .page-loadmore-desc {
-    text-align: center;
-    color: #666;
-    padding-bottom: 5px
-  }
-
-  .page-loadmore-desc:last-of-type,
-  .page-loadmore-listitem {
-    border-bottom: 1px solid #eee
-  }
-
-  .page-loadmore-listitem {
-    height: 50px;
-    line-height: 50px;
-    text-align: center
-  }
-
-  .page-loadmore-listitem:first-child {
-    border-top: 1px solid #eee
   }
 
   .page-loadmore-wrapper {

@@ -7,7 +7,7 @@
 
       <mt-field label="验证码" placeholder="请输入验证码" type="number" v-model="code" :style="[inputStyle]"></mt-field>
     </div>
-    <div style="margin-top: 30px">
+    <div style="margin-top: 2rem">
       <br>
       <mt-button type="primary" size="large" @click="register">立即注册</mt-button><br>
       <mt-button type="default" size="large" @click="backLogin">返回登录</mt-button>

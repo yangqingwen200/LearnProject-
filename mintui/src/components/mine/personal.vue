@@ -15,7 +15,6 @@
 
 <script>
   import Cookies from 'js-cookie';
-  import {Toast} from 'mint-ui';
   import {MessageBox} from 'mint-ui';
 
   export default {
@@ -49,7 +48,6 @@
           userId: userId,
           token: token,
           version: 1.1,
-          id: userId
         };
         this.$http.post('/app/getAppUserInfo_appUser.do', data).then(function (response) {
           if (response.data.code === 1000) {
@@ -58,20 +56,9 @@
             this.telephone = response.data.userInfo.telephone;
             this.bir = response.data.userInfo.bir;
           } else {
-            Toast({
-              message: response.data.msg,
-              position: 'middle',
-              duration: 2000
-            });
             this.$router.push({name: 'login'});
           }
-        }.bind(this)).catch((error) => {
-          Toast({
-            message: '网络错误...',
-            position: 'middle',
-            duration: 2000
-          });
-        });
+        }.bind(this));
       }
     },
     mounted() {

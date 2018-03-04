@@ -7,12 +7,18 @@ Vue.prototype.$http = axios;
 
 axios.defaults.timeout = 10000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';  //配置请求头
-axios.defaults.baseURL = 'http://192.168.1.247:8080';   //配置接口地址
+axios.defaults.baseURL = 'http://192.168.1.201:8080';   //配置接口地址
 
 //添加请求拦截器(在发送请求之前做某件事)
 axios.interceptors.request.use((config) => {
   if(config.method  === 'post'){
-    config.data = qs.stringify(config.data); //POST传参序列化
+    let data = config.data;
+    for(let key in data) {
+      if(data[key] === '') {
+        delete data[key]; //剃掉值为空的key
+      }
+    }
+    config.data = qs.stringify(data); //POST传参序列化
   }
   return config;
 },(error) =>{

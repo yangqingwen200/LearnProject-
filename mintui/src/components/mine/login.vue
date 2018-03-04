@@ -4,7 +4,7 @@
       <mt-field label="手机号" placeholder="请输入手机号" type="number" v-model="phone" :style="[inputStyle]"></mt-field>
       <mt-field label="密码" placeholder="请输入密码" type="password" v-model="password" :style="[inputStyle]"></mt-field>
     </div>
-    <div style="margin-top: 30px">
+    <div style="margin-top: 2rem">
       <mt-button type="primary" size="large" @click="login">登录</mt-button>
       <br>
       <mt-button type="default" size="large" @click="register">立即注册</mt-button>
