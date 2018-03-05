@@ -26,7 +26,7 @@
 
 <script>
   import Cookies from 'js-cookie';
-  import tabShowPath from './assets/tabShowPath'
+  import tabShowPath from './assets/js/tabShowPath'
 
   export default {
     name: 'App',
@@ -38,15 +38,19 @@
     },
     methods: {
       home: function () {
+        this.clearJumpParam();
         this.$router.push({name: 'home'});
       },
       around: function () {
+        this.clearJumpParam();
         this.$router.push({name: 'around'});
       },
       more: function () {
+        this.clearJumpParam();
         this.$router.push({name: 'more'});
       },
       mine: function () {
+        this.clearJumpParam();
         let token = Cookies.get("token");
         if (token) {
           this.$router.push({name: 'personal'});

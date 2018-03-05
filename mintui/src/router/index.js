@@ -10,11 +10,11 @@ export const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  console.info(to);
-  console.info(from);
+  /*console.info(to);
+  console.info(from);*/
   next();
 });
 
 router.afterEach((to) => {
-  console.info(to);
+  /*console.info(to);*/
 });

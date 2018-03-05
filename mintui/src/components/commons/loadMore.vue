@@ -8,7 +8,7 @@
       </div>
     </transition>
 
-    <div id="loadMoreWrapper" class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'rem' }">
+    <div id="loadMoreWrapper" class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
       <mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"
                    :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
                    :bottom-all-loaded="this.$store.getters.getAllLoaded"
@@ -82,8 +82,9 @@
         this.moveTranslate = (1 + translateNum / 70).toFixed(2);
       },
       loadTop() {
-        this.init();
+        this.$store.commit('modLeaveList', false);
 
+        this.init();
         this.$store.commit('modPullOrDrop', false);
         let _this = this;
         var interval = setInterval(function () {
@@ -95,8 +96,14 @@
         }, 200);
       },
       loadBottom() {
-        this.reqParamInit.pageNow++;//Object.assign() 合并对象
-        this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
+        if (this.$store.getters.getLeaveList) {
+          this.reqParamInit.pageNow = this.$store.getters.getBeforeJumpPram.pageNow + 1;
+        } else {
+          this.reqParamInit.pageNow++;
+        }
+        this.$store.commit('modLeaveList', false);
+
+        this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd)); //Object.assign() 合并对象
 
         this.$store.commit('modPullOrDrop', false);
         let _this = this;
@@ -108,27 +115,33 @@
           }
         }, 200);
       },
+
       init() {
-        document.getElementById('loadMoreWrapper').scrollTop = 0;
         this.reqParamInit.pageNow = 1;
         this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
+        this.$nextTick(function () {
+          document.getElementById('loadMoreWrapper').scrollTop = this.$store.getters.getPosition;
+        })
       },
+
       scrollEve() {
         let after = document.getElementById('loadMoreWrapper').scrollTop;
-        if (this.scroll - after > 0) {
-          this.showSearchBar = true; //向上滑动, 隐藏搜索栏
-        } else {
-          this.showSearchBar = false; //向下滑动, 显示搜索栏
-        }
+        if (typeof this.$slots.viewSearchBar !== 'undefined') {
+          if (this.scroll - after > 0) {
+            this.showSearchBar = true; //向上滑动, 隐藏搜索栏
+          } else {
+            this.showSearchBar = false; //向下滑动, 显示搜索栏
+          }
+        } //有搜索栏才添加滚动事件, 通过是否有viewSearchBar插槽判断
+
         this.scroll = after;
+        this.$store.commit('modPosition', after);
       }
     },
     mounted() {
       this.init();
-      this.wrapperHeight = (document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top) / 16;
-      if (typeof this.$slots.viewSearchBar !== 'undefined') { //有搜索栏才添加滚动事件, 通过是否有viewSearchBar插槽判断
-        document.getElementById('loadMoreWrapper').addEventListener('scroll', this.scrollEve); //添加监听滑动事件
-      }
+      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+      document.getElementById('loadMoreWrapper').addEventListener('scroll', this.scrollEve); //添加监听滑动事件
     },
     watch: {
       'reqParamAdd': { //监听请求服务器额外的参数(一般搜索栏), 变化后重新发起请求

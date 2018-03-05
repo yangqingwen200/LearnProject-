@@ -7,7 +7,10 @@ import store from './vuex'
 import 'mint-ui/lib/style.css'
 import './axios'
 import Mint from 'mint-ui'
+import clearParam from './assets/js/method/clearParam'
+
 Vue.use(Mint);
+Vue.use(clearParam);
 
 Vue.config.productionTip = false
 

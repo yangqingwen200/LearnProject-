@@ -99,17 +99,24 @@
     },
     methods: {
       getServerData(reqParam) {
-        this.$http.post('/app/aroundFriend_appUser.do', reqParam).then(function (response) {
-          if (response.data.code === 1000) {
-            if (reqParam.pageNow === 1) {
-              this.list = response.data.list;
-            } else {
-              this.list = this.list.concat(response.data.list);
+        if(this.$store.getters.getLeaveList) {
+          this.list = this.$store.getters.getList;
+        } else {
+          this.$http.post('/app/aroundFriend_appUser.do', reqParam).then(function (response) {
+            if (response.data.code === 1000) {
+              if (reqParam.pageNow === 1) {
+                this.list = response.data.list;
+              } else {
+                this.list = this.list.concat(response.data.list);
+              }
             }
-          }
-        }.bind(this));
+            this.$store.commit('modBeforeJumpPram', reqParam);
+            this.$store.commit('modList', this.list);
+          }.bind(this));
+        }
       },
       friendDetail(userId) {
+        this.$store.commit('modLeaveList', true);
         let token = Cookies.get("token");
         if (!token) {
           this.overLayer = true;
