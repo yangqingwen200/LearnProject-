@@ -10,14 +10,16 @@
 
     <div id="loadMoreWrapper" class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'rem' }">
       <mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"
-                   :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded"
+                   :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
+                   :bottom-all-loaded="this.$store.getters.getAllLoaded"
                    ref="loadmore" :top-drop-text="topDropText" :bottom-pull-text="bottomPullText"
                    :bottom-drop-text="bottomDropText" :auto-fill=false>
         <!-- 使用slot, 父组件传递什么, 子组件就显示什么, 达到公用 -->
         <slot name="viewTemplate">
         </slot>
       </mt-loadmore>
-      <div v-show="allLoaded && reqParamInit.pageNow != 1" style="color: grey;text-align: center;">
+      <div v-show="this.$store.getters.getAllLoaded && reqParamInit.pageNow != 1"
+           style="color: grey;text-align: center;">
         没有更多数据...
       </div>
     </div>
@@ -51,9 +53,7 @@
       reqParamAdd: { // 请求服务器额外的参数
         type: Object,
         default() {
-          return {
-
-          }
+          return {}
         }
       }
     },
@@ -64,7 +64,6 @@
         topStatus: '',
         translate: 0,
         moveTranslate: 0,
-        allLoaded: false,
         scroll: 0,
         showSearchBar: true,
       }
@@ -84,42 +83,50 @@
       },
       loadTop() {
         this.init();
+
+        this.$store.commit('modPullOrDrop', false);
         let _this = this;
-        setTimeout(function () {
-          _this.$refs.loadmore.onTopLoaded();
-        }, 1000);
+        var interval = setInterval(function () {
+          let pullOrDrop = _this.$store.getters.getPullOrDrop;
+          if (pullOrDrop) {
+            _this.$refs.loadmore.onTopLoaded(); //目前采用定时访问的方式 查看服务器是否响应成功, 最好是采用回调的方式
+            clearInterval(interval);
+          }
+        }, 200);
       },
       loadBottom() {
         this.reqParamInit.pageNow++;//Object.assign() 合并对象
         this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
+
+        this.$store.commit('modPullOrDrop', false);
         let _this = this;
-        setTimeout(function () {
-          _this.$refs.loadmore.onBottomLoaded();
-        }, 1000);
+        var interval = setInterval(function () {
+          let pullOrDrop = _this.$store.getters.getPullOrDrop;
+          if (pullOrDrop) {
+            _this.$refs.loadmore.onBottomLoaded();
+            clearInterval(interval);
+          }
+        }, 200);
       },
       init() {
         document.getElementById('loadMoreWrapper').scrollTop = 0;
-        this.allLoaded = false;
         this.reqParamInit.pageNow = 1;
         this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
       },
       scrollEve() {
         let after = document.getElementById('loadMoreWrapper').scrollTop;
-        if(this.scroll - after > 0) {
+        if (this.scroll - after > 0) {
           this.showSearchBar = true; //向上滑动, 隐藏搜索栏
         } else {
           this.showSearchBar = false; //向下滑动, 显示搜索栏
         }
         this.scroll = after;
-      },
-      changeAllLoaded() {
-        this.allLoaded = true; //当前页为最后一页, 禁止上拉加载
       }
     },
     mounted() {
       this.init();
-      this.wrapperHeight = (document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top)/16;
-      if(typeof this.$slots.viewSearchBar !== 'undefined') { //有搜索栏才添加滚动事件, 通过是否有viewSearchBar插槽判断
+      this.wrapperHeight = (document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top) / 16;
+      if (typeof this.$slots.viewSearchBar !== 'undefined') { //有搜索栏才添加滚动事件, 通过是否有viewSearchBar插槽判断
         document.getElementById('loadMoreWrapper').addEventListener('scroll', this.scrollEve); //添加监听滑动事件
       }
     },
@@ -138,11 +145,13 @@
   .fade-enter-active {
     transition: opacity 1s;
   }
+
   .fade-leave-active {
     transition: opacity .5s;
   }
 
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+  {
     opacity: 0;
   }
 

@@ -1,9 +1,9 @@
 <template>
   <div class="over-layer">  <!--@touchmove.prevent: 可阻止滑动-->
     <div class="over-layer-children">
-      <span style="font-weight: bold;font-size: 1.1rem">你还未登录</span>
+      <span style="font-weight: bold;">你还未登录</span>
       <div style="margin-top: 0.3rem;padding: 0 0.5rem">
-        <mt-field placeholder="请输入手机号..." type="number" v-model="phone"></mt-field>
+        <mt-field placeholder="请输入手机号码..." type="number" v-model="phone"></mt-field>
         <mt-field placeholder="请输入密码..." type="password" v-model="password"></mt-field>
       </div>
       <div style="margin-top: 1.0rem;">
@@ -101,7 +101,7 @@
     background-color: #fafafa;
     border-radius: 0.3rem;
     width: 90%;
-    padding: 1%
+    padding: 2% 1%
   }
 
 </style>

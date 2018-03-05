@@ -82,9 +82,6 @@
             } else {
               this.list = this.list.concat(response.data.list);
             }
-            if (response.data.pageNow === response.data.pageCount) {
-              this.$refs.children.changeAllLoaded();
-            }
           }
         }.bind(this));
       },

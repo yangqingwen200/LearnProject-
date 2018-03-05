@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
+import store from '../vuex'
 import {Toast} from 'mint-ui'
 
 Vue.prototype.$http = axios;
 
-axios.defaults.timeout = 10000; //响应时间
+axios.defaults.timeout = 20000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';  //配置请求头
-axios.defaults.baseURL = 'http://192.168.1.201:8080';   //配置接口地址
+axios.defaults.baseURL = 'http://192.168.1.247:8080';   //配置接口地址
 
 //添加请求拦截器(在发送请求之前做某件事)
 axios.interceptors.request.use((config) => {
@@ -35,14 +36,16 @@ axios.interceptors.response.use((response) =>{
     });
   } else {
     if(response.data.hasOwnProperty('pageNow') && response.data.hasOwnProperty('pageCount')) {
-      //说明是分页调用, 友好显示当前页和总页数
-      Toast({
+      Toast({ //说明是分页调用, 友好显示当前页和总页数
         message: response.data.pageNow + " / " + response.data.pageCount,
         position: 'bottom',
         duration: 1000
       });
+      store.commit('modAllLoaded', response.data.pageNow === response.data.pageCount); //改变是否还能上拉加载, 为true则不能继续上拉
+      store.commit('modPullOrDrop', true); //数据是否请求完毕
     }
   }
+
   return response;
 }, (error) => {
   Toast({
