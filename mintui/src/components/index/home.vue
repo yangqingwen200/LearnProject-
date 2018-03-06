@@ -1,12 +1,11 @@
 <template>
   <div>
     <div>
-      <div class="lists">
+      <div id="topNavBar" class="lists">
         <div @click="changeModules('focus')" :class="{red: module === 'focus'}">关注</div>
         <div @click="changeModules('travel')" :class="{red: module === 'travel'}">推荐</div>
         <div @click="changeModules('game')" :class="{red: module === 'game'}">游戏</div>
         <div @click="changeModules('finance')" :class="{red: module === 'finance'}">财经</div>
-        <div @click="changeModules('car')" :class="{red: module === 'car'}">汽车</div>
         <div @click="changeModules('home')" :class="{red: module === 'home'}">居家</div>
         <div @click="changeModules('society')" :class="{red: module === 'society'}">科技</div>
         <div @click="changeModules('video')" :class="{red: module === 'video'}">视频</div>
@@ -19,6 +18,7 @@
         <div @click="changeModules('fashion')" :class="{red: module === 'fashion'}">时尚</div>
         <div @click="changeModules('school')" :class="{red: module === 'school'}">高校</div>
         <div @click="changeModules('fiction')" :class="{red: module === 'fiction'}">小说</div>
+        <div @click="changeModules('car')" :class="{red: module === 'car'}">汽车</div>
         <div @click="changeModules('history')" :class="{red: module === 'history'}">历史</div>
         <div @click="changeModules('hots')" :class="{red: module === 'hots'}">热点</div>
         <div @click="changeModules('digital')" :class="{red: module === 'digital'}">数码</div>
@@ -32,16 +32,16 @@
       <load-more ref="children" @get-server-data="getServerData" :req-param-add="reqParamAdd">
         <div slot="viewTemplate">
           <ul style="margin: 0;padding: 0;">
-            <li v-for="item in list" @click="articleDetail(item.userId)" style="margin-top: -10px;">
+            <li v-for="item in list" @click="articleDetail(item.id)" style="margin-top: -5px;">
               <table border="0" style="width: 100%">
                 <tr>
-                  <td><span v-text="item.title"></span></td>
+                  <td><span v-text="item.title" :class="{change: historyId.has(item.id)}"></span></td>
                   <td rowspan="2" style="width: 30%">
                     <img :src="item.middle_image" style="width: 100%;border-radius: 3px;"/>
                   </td>
                 </tr>
                 <tr>
-                  <td style="font-size: 0.6rem;color: #888">
+                  <td style="font-size: 0.7rem;color: #a9acb1">
                     <span v-text="item.source"></span>
                     <span v-text="item.comments_count" style="margin-left: 3px"></span>评论
                     <span v-text="item.publish" style="margin-left: 3px"></span>
@@ -49,7 +49,7 @@
                 </tr>
                 <tr>
                   <td colspan="3">
-                    <hr style="border:0.07rem dotted #ccc;padding: 0"/>
+                    <hr style="background-color: #ddd;height: 1px;border: none;">
                   </td>
                 </tr>
               </table>
@@ -71,17 +71,16 @@
     name: "more",
     data() {
       return {
-        module: 'game',
+        module: this.$store.getters.getLastClickModule, //进入页面默认选中模块
+        historyId: this.$store.getters.getHistoryId,
         red: 'red',
-        selected: 'all',
-        phone: '',
-        password: '',
+        change: 'change',
         list: [],
         reqParamAdd: {
           pageSize: 10,
-          category: ''
+          category: this.$store.getters.getLastClickModule
         },
-      }
+      };
     },
     components: {
       loadMore,
@@ -105,14 +104,30 @@
         }
       },
       articleDetail(articleId) {
-        console.info(articleId);
+        this.$store.commit('modHistoryId', articleId); //保存被点击过文章的id, 渲染列表显示不同颜色
         this.$store.commit('modLeaveList', true);
+        this.$router.push({
+          name: 'articleDetail',
+          params: {
+            id: articleId
+          }
+        });
       },
       changeModules(modules) {
+        this.$store.commit('modLeaveList', false);
+        this.$store.commit('modLastClickModule', modules); //保存最后点击模块
         this.module = modules;
         this.reqParamAdd.category = modules;
-        console.info(modules);
       }
+    },
+    mounted() {
+      let _this = this;
+      document.getElementById('topNavBar').addEventListener('scroll', function () {
+        _this.$store.commit('modTopNavBarPost', this.scrollLeft);
+      });
+      this.$nextTick(function () {
+        document.getElementById('topNavBar').scrollLeft = this.$store.getters.getTopNavBarPost;
+      });
     }
   }
 </script>
@@ -135,5 +150,9 @@
     color: #26a2ff !important;
     background-color: #f0f0f0;
     border-radius: 10px;
+  }
+
+  .change {
+    color: #a9acb1;
   }
 </style>

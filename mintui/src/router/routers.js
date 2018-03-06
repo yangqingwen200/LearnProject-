@@ -45,6 +45,13 @@ export default [
     }
   },
   {
+    path: '/articleDetail/:id',
+    name: 'articleDetail',
+    component: resolve => {
+      require(['../components/index/articleDetail'], resolve);
+    }
+  },
+  {
     path: '/around',
     name: 'around',
     component: around,
