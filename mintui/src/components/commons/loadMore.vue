@@ -1,26 +1,25 @@
 <template>
   <!-- 加载组件url: https://www.cnblogs.com/yuri2016/p/7045709.html -->
-  <div class="page-loadmore">
-    <transition name="fade">
+  <div>
+    <!--<transition name="fade">
       <div v-show="showSearchBar">
         <slot name="viewSearchBar">
         </slot>
       </div>
     </transition>
-
+-->
     <div id="loadMoreWrapper" class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
       <mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"
                    :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
                    :bottom-all-loaded="this.$store.getters.getAllLoaded"
-                   ref="loadmore" :top-drop-text="topDropText" :bottom-pull-text="bottomPullText"
+                   ref="loadmore" :top-drop-text="topDropText" :bottom-pull-text="bottomPullText" :top-pull-text="topPullText"
                    :bottom-drop-text="bottomDropText" :auto-fill=false>
         <!-- 使用slot, 父组件传递什么, 子组件就显示什么, 达到公用 -->
         <slot name="viewTemplate">
         </slot>
       </mt-loadmore>
-      <div v-show="this.$store.getters.getAllLoaded && reqParamInit.pageNow != 1"
-           style="color: grey;text-align: center;">
-        没有更多数据...
+      <div v-show="this.$store.getters.getAllLoaded" style="color: grey;text-align: center;">
+        没有找到数据...
       </div>
     </div>
   </div>
@@ -31,15 +30,19 @@
     props: {
       topDropText: {
         type: String,
-        default: '释放刷新'
+        default: '↑ 释放刷新..'
+      },
+      topPullText: {
+        type: String,
+        default: '↓ 下拉刷新.'
       },
       bottomPullText: { //这样可以 在methods中, this.topDropText可以拿到值
         type: String,
-        default: '上拉加载'
+        default: '↑ 上拉加载.'
       },
       bottomDropText: {
         type: String,
-        default: '释放加载'
+        default: '↓ 释放加载..'
       },
       reqParamInit: { //分页默认请求服务器的参数
         type: Object,
@@ -140,7 +143,7 @@
     },
     mounted() {
       this.init();
-      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top - 60;
       document.getElementById('loadMoreWrapper').addEventListener('scroll', this.scrollEve); //添加监听滑动事件
     },
     watch: {

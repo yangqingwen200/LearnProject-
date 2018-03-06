@@ -10,11 +10,11 @@
       </mt-tab-item>
       <mt-tab-item id="around" @click.native="around">
         <img slot="icon" src="./assets/logo.png">
-        发现
+        视频
       </mt-tab-item>
       <mt-tab-item id="more" @click.native="more">
         <img slot="icon" src="./assets/logo.png">
-        更多
+        微头条
       </mt-tab-item>
       <mt-tab-item id="mine" @click.native="mine">
         <img slot="icon" src="./assets/logo.png">
@@ -81,6 +81,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    margin-top: 1.25rem;
+    margin-top: 0.5rem;
   }
 </style>
