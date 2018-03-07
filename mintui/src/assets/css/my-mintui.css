@@ -1,0 +1,9 @@
+/* 覆盖mint-ui默认样式, 定义跟mint-ui相同名称的css */
+
+/* 修改Toast组件position为bottom显示距离底部位置 */
+.mint-toast.is-placebottom {
+  bottom: 55px; //默认为50px
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0)
+}

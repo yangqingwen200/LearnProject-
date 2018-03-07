@@ -1,33 +1,14 @@
 <template>
   <div>
     <div>
-      <div id="topNavBar" class="lists">
-        <div @click="changeModules('focus')" :class="{red: module === 'focus'}">关注</div>
-        <div @click="changeModules('travel')" :class="{red: module === 'travel'}">推荐</div>
-        <div @click="changeModules('game')" :class="{red: module === 'game'}">游戏</div>
-        <div @click="changeModules('finance')" :class="{red: module === 'finance'}">财经</div>
-        <div @click="changeModules('home')" :class="{red: module === 'home'}">居家</div>
-        <div @click="changeModules('society')" :class="{red: module === 'society'}">科技</div>
-        <div @click="changeModules('video')" :class="{red: module === 'video'}">视频</div>
-        <div @click="changeModules('qa')" :class="{red: module === 'qa'}">问答</div>
-        <div @click="changeModules('military')" :class="{red: module === 'military'}">军事</div>
-        <div @click="changeModules('sport')" :class="{red: module === 'sport'}">体育</div>
-        <div @click="changeModules('international')" :class="{red: module === 'international'}">国际</div>
-        <div @click="changeModules('health')" :class="{red: module === 'health'}">健康</div>
-        <div @click="changeModules('house')" :class="{red: module === 'house'}">房产</div>
-        <div @click="changeModules('fashion')" :class="{red: module === 'fashion'}">时尚</div>
-        <div @click="changeModules('school')" :class="{red: module === 'school'}">高校</div>
-        <div @click="changeModules('fiction')" :class="{red: module === 'fiction'}">小说</div>
-        <div @click="changeModules('car')" :class="{red: module === 'car'}">汽车</div>
-        <div @click="changeModules('history')" :class="{red: module === 'history'}">历史</div>
-        <div @click="changeModules('hots')" :class="{red: module === 'hots'}">热点</div>
-        <div @click="changeModules('digital')" :class="{red: module === 'digital'}">数码</div>
-      </div>
-      <div>
-        <hr style="margin-top: 6px;background-color: #ddd;height: 1px;border: none">
-      </div>
+      <top-nav-bar>
+        <div slot="topBar">
+          <div v-for="item in topNavBarModules" @click="changeModules(item.moduleId)"
+               :class="{'top-nar-bar': module === item.moduleId}">{{item.name}}
+          </div>
+        </div>
+      </top-nav-bar>
     </div>
-
     <div>
       <load-more ref="children" @get-server-data="getServerData" :req-param-add="reqParamAdd">
         <div slot="viewTemplate">
@@ -35,7 +16,7 @@
             <li v-for="item in list" @click="articleDetail(item.id)" style="margin-top: -5px;">
               <table border="0" style="width: 100%">
                 <tr>
-                  <td><span v-text="item.title" :class="{change: historyId.has(item.id)}"></span></td>
+                  <td><span v-text="item.title" :class="{'history-id': historyId.has(item.id)}"></span></td>
                   <td rowspan="2" style="width: 30%">
                     <img :src="item.middle_image" style="width: 100%;border-radius: 3px;"/>
                   </td>
@@ -55,9 +36,6 @@
               </table>
             </li>
           </ul>
-         <!-- <div v-if="list.length === 0" style="color: grey;text-align: center; margin-top: 40%">
-            暂无数据...
-          </div>-->
         </div>
       </load-more>
     </div>
@@ -66,15 +44,29 @@
 
 <script>
   import loadMore from '../commons/loadMore'
+  import topNavBar from '../commons/topNavBar'
 
   export default {
     name: "more",
     data() {
       return {
+        topNavBarModules: [  //模块列表, 应当从服务器获取
+          {name: '关注', moduleId: 'focus'},
+          {name: '推荐', moduleId: 'travel'},
+          {name: '游戏', moduleId: 'game'},
+          {name: '财经', moduleId: 'finance'},
+          {name: '居家', moduleId: 'home'},
+          {name: '科技', moduleId: 'society'},
+          {name: '国际', moduleId: 'international'},
+          {name: '健康', moduleId: 'health'},
+          {name: '汽车', moduleId: 'car'},
+          {name: '历史', moduleId: 'history'},
+          {name: '数码', moduleId: 'digital'},
+          {name: '时尚', moduleId: 'fashion'},
+        ],
         module: this.$store.getters.getLastClickModule, //进入页面默认选中模块
         historyId: this.$store.getters.getHistoryId,
-        red: 'red',
-        change: 'change',
+        'history-id': 'history-id',
         list: [],
         reqParamAdd: {
           pageSize: 10,
@@ -84,6 +76,7 @@
     },
     components: {
       loadMore,
+      topNavBar
     },
     methods: {
       getServerData(reqParam) {
@@ -114,45 +107,21 @@
         });
       },
       changeModules(modules) {
+        if (this.$store.getters.getLastClickModule === modules) {
+          return;  //当前处于这个模块, 再次点击, 直接返回.
+        }
+        this.list = []; //先清空list, 否则模块之间切换会有闪动
         this.$store.commit('modLeaveList', false);
         this.$store.commit('modLastClickModule', modules); //保存最后点击模块
         this.module = modules;
         this.reqParamAdd.category = modules;
       }
     },
-    mounted() {
-      let _this = this;
-      document.getElementById('topNavBar').addEventListener('scroll', function () {
-        _this.$store.commit('modTopNavBarPost', this.scrollLeft);
-      });
-      this.$nextTick(function () {
-        document.getElementById('topNavBar').scrollLeft = this.$store.getters.getTopNavBarPost;
-      });
-    }
   }
 </script>
 
 <style scoped>
-  .lists {
-    overflow-y: hidden;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .lists div {
-    display: inline-table;
-    vertical-align: top;
-    margin-left: 0;
-    padding: 2px 7px;
-  }
-
-  .red {
-    color: #26a2ff !important;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-  }
-
-  .change {
+  .history-id {
     color: #a9acb1;
   }
 </style>

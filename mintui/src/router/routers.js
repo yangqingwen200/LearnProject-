@@ -52,6 +52,13 @@ export default [
     }
   },
   {
+    path: '/video',
+    name: 'video',
+    component: resolve => {
+      require(['../components/video/video'], resolve);
+    }
+  },
+  {
     path: '/around',
     name: 'around',
     component: around,

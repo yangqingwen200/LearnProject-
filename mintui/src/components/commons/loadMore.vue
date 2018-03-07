@@ -12,20 +12,23 @@
       <mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange"
                    :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
                    :bottom-all-loaded="this.$store.getters.getAllLoaded"
-                   ref="loadmore" :top-drop-text="topDropText" :bottom-pull-text="bottomPullText" :top-pull-text="topPullText"
+                   ref="loadmore" :top-drop-text="topDropText" :bottom-pull-text="bottomPullText"
+                   :top-pull-text="topPullText"
                    :bottom-drop-text="bottomDropText" :auto-fill=false>
         <!-- 使用slot, 父组件传递什么, 子组件就显示什么, 达到公用 -->
         <slot name="viewTemplate">
         </slot>
       </mt-loadmore>
-      <div v-show="this.$store.getters.getAllLoaded" style="color: grey;text-align: center;">
-        没有找到数据...
+      <div v-show="this.$store.getters.getAllLoaded" :class="{'no-data-show': this.$store.getters.getNoDataShow}"
+           style="color: grey;text-align: center;">
+        <span>暂时没数据...</span>
       </div>
     </div>
   </div>
 </template>
 
 <script type="text/babel">
+  import { Indicator } from 'mint-ui';
   export default {
     props: {
       topDropText: {
@@ -69,6 +72,7 @@
         moveTranslate: 0,
         scroll: 0,
         showSearchBar: true,
+        'no-data-show': 'no-data-show'
       }
     },
     methods: {
@@ -87,7 +91,7 @@
       loadTop() {
         this.$store.commit('modLeaveList', false);
 
-        this.init();
+        this.init(false);
         this.$store.commit('modPullOrDrop', false);
         let _this = this;
         var interval = setInterval(function () {
@@ -119,12 +123,29 @@
         }, 200);
       },
 
-      init() {
+      init(flag) {
+        if(flag && !this.$store.getters.getLeaveList) {
+          Indicator.open({
+            spinnerType: 'fading-circle'
+          });
+        }
         this.reqParamInit.pageNow = 1;
         this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
         this.$nextTick(function () {
           document.getElementById('loadMoreWrapper').scrollTop = this.$store.getters.getPosition;
-        })
+        });
+
+        if(flag && !this.$store.getters.getLeaveList) { //清除加载时动画
+          let _this = this;
+          var interval = setInterval(function () {
+            let pullOrDrop = _this.$store.getters.getPullOrDrop;
+            if (pullOrDrop) {
+              Indicator.close();
+              _this.$store.commit('modPullOrDrop', false);
+              clearInterval(interval);
+            }
+          }, 100);
+        }
       },
 
       scrollEve() {
@@ -139,17 +160,17 @@
 
         this.scroll = after;
         this.$store.commit('modPosition', after);
-      }
+      },
     },
     mounted() {
-      this.init();
+      this.init(true);
       this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top - 60;
       document.getElementById('loadMoreWrapper').addEventListener('scroll', this.scrollEve); //添加监听滑动事件
     },
     watch: {
       'reqParamAdd': { //监听请求服务器额外的参数(一般搜索栏), 变化后重新发起请求
         handler(newValue, oldValue) {
-          this.init();
+          this.init(true);
         },
         deep: true
       }
@@ -205,6 +226,10 @@
   .mint-loadmore-bottom span.is-rotate {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg)
+  }
+
+  .no-data-show {
+    margin-top: 30%;
   }
 
 </style>

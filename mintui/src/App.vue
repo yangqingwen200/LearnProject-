@@ -8,7 +8,7 @@
         <img slot="icon" src="./assets/home.png">
         首页
       </mt-tab-item>
-      <mt-tab-item id="around" @click.native="around">
+      <mt-tab-item id="around" @click.native="video">
         <img slot="icon" src="./assets/video.png">
         视频
       </mt-tab-item>
@@ -41,9 +41,9 @@
         this.clearJumpParam();
         this.$router.push({name: 'home'});
       },
-      around: function () {
+      video: function () {
         this.clearJumpParam();
-        this.$router.push({name: 'around'});
+        this.$router.push({name: 'video'});
       },
       more: function () {
         this.clearJumpParam();
