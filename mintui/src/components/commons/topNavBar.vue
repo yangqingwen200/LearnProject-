@@ -4,7 +4,7 @@
       <slot name="topBar"></slot>
     </div>
     <div>
-      <hr style="margin-top: 6px;background-color: #ddd;height: 1px;border: none">
+      <hr class="my-hr" style="margin-top: 6px;">
     </div>
   </div>
 </template>

@@ -8,7 +8,7 @@ Vue.prototype.$http = axios;
 
 axios.defaults.timeout = 20000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';  //配置请求头
-axios.defaults.baseURL = 'http://192.168.1.247:8080';   //配置接口地址
+axios.defaults.baseURL = 'http://192.168.1.103:8080';   //配置接口地址
 
 //添加请求拦截器(在发送请求之前做某件事)
 axios.interceptors.request.use((config) => {
@@ -47,9 +47,9 @@ axios.interceptors.response.use((response) =>{
         });
       }
       store.commit('modAllLoaded', response.data.pageNow === response.data.pageCount); //改变是否还能上拉加载, 为true则不能继续上拉
-      store.commit('modPullOrDrop', true); //数据是否请求完毕
     }
   }
+  store.commit('modPullOrDrop', true); //数据是否请求完毕
 
   return response;
 }, (error) => {
@@ -58,6 +58,7 @@ axios.interceptors.response.use((response) =>{
     position: 'middle',
     duration: 2000
   });
+  store.commit('modPullOrDrop', true); //数据是否请求完毕, 只是错误了
   return Promise.reject(error);
 });
 

@@ -30,7 +30,7 @@
                 </tr>
                 <tr>
                   <td colspan="3">
-                    <hr style="background-color: #ddd;height: 1px;border: none;">
+                    <hr class="my-hr">
                   </td>
                 </tr>
               </table>
