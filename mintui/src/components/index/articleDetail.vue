@@ -27,15 +27,15 @@
         如何改变现状？“说实话，我也没有特别好的办法。如果要提建议，就是应该进一步改进科学评价体系，这需要全社会达成一种共识。”施一公介绍，国际通用的方法是参考国际最顶尖专家的观点：“这是一种‘唯专家论’的方式，我不评价这种做法的利弊，但至少在很多国家都是这样的。如果是将本领域所有专家聚在一起，通过抽签确定评价委员会，在科学上，这样的民主是不能带领科学健康向前发展的。”
       </div>
       <div style="text-align: center;margin-top: 1.5rem">
-        <span>
-          <img v-if="!zan" src="../../assets/thumb22.png" align="middle" style="width: 10%" @click="getZan"/>
-          <img v-if="zan" src="../../assets/thumb20.png" align="middle" style="width: 10%" @click="getZan"/>
-          <span style="vertical-align: -webkit-baseline-middle">100</span>
+        <span @click="getZan">
+          <img v-if="!zan" src="../../assets/thumb22.png" align="middle" style="width: 10%" />
+          <img v-if="zan" src="../../assets/thumb20.png" align="middle" style="width: 10%"/>
+          <span style="vertical-align: -webkit-baseline-middle;margin-left: -5px">999</span>
         </span>
-        <span style="margin-left: 4rem">
-          <img v-if="!cai" src="../../assets/thumb21.png" align="middle" style="width: 10%;" @click="getCai"/>
-          <img v-if="cai" src="../../assets/thumb19.png" align="middle" style="width: 10%;" @click="getCai"/>
-          <span style="vertical-align: -webkit-baseline-middle">200</span>
+        <span @click="getCai" style="margin-left: 15%">
+          <img v-if="!cai" src="../../assets/thumb21.png" align="middle" style="width: 10%;" />
+          <img v-if="cai" src="../../assets/thumb19.png" align="middle" style="width: 10%;"/>
+          <span style="vertical-align: -webkit-baseline-middle;margin-left: -5px">9999</span>
         </span>
       </div>
 
@@ -55,7 +55,7 @@
     <div class="footer">
       <!-- 不要用v-if, 否则下面的输入框会同时触发focus和blur事件, 没法输入内容 -->
       <span v-show="!discussing" class="go-back" @click="goBackList">
-        <img src="../../assets/left.png" style="width: 1.5rem"/>
+        <img src="../../assets/arrow270.png" align="middle" style="width: 1.3rem"/>
       </span>
       <span>
         <input id="discussing" :class="{'my-input': true, 'my-input-discuss': discussing}" placeholder="发表神评论..."
@@ -63,14 +63,13 @@
       </span>
 
       <span v-if="!discussing" style="text-align: right;padding-right: 1.5rem">
-        <span>
-          <img src="../../assets/message5.png" style="width: 55%" align="middle" @click="goToComments"/>
-          <span class="commentNum">30</span>
+        <span @click="goToComments">
+          <img src="../../assets/message5.png" style="width: 1.8rem" align="middle"/>
+          <span class="commentNum">3.1万</span>
         </span>
-        <span>
-          <img v-show="!collection" src="../../assets/star_empty.png" style="width: 55%" @click="getCollection"/>
-          <img v-show="collection" src="../../assets/star_fill.png" style="width: 55%" @click="getCollection"/>
-
+        <span style="padding-left: 1.0rem" @click="getCollection">
+          <img v-show="!collection" src="../../assets/star_empty.png" align="middle" style="width: 1.8rem" />
+          <img v-show="collection" src="../../assets/star_fill.png" align="middle" style="width: 1.8rem"/>
         </span>
       </span>
       <div style="vertical-align: middle;display: table-cell;">
@@ -142,7 +141,7 @@
 
 <style scoped>
   .footer {
-    height: 2.5rem;
+    height: 2.0rem;
     position: fixed;
     bottom: 0;
     width: 96%;
@@ -157,8 +156,7 @@
   }
 
   .go-back {
-    padding: 0 1.5rem 0 0.5rem;
-    font-size: 2.0rem
+    padding: 0 0.5rem 0.2rem 0.5rem;
   }
 
   div.footer span {
@@ -168,7 +166,7 @@
 
   .my-input {
     border-radius: 0.25rem;
-    height: 2.0rem;
+    height: 1.5rem;
     font-size: 0.9rem;
     width: 150px;
     border: 1px solid #a9acb1;
@@ -200,11 +198,11 @@
 
   .commentNum {
     float: right;
-    margin-left: -15px;
-    background-color: red;
+    margin-left: -12px;
+    background-color: #26a2ff;
     color: #fafafa;
-    border-radius: 0.5rem;
-    padding: 0.05rem 0.2rem;
+    border-radius: 0.4rem;
+    padding: 0 0.25rem;
     font-size: 0.7rem;
     position: relative;
   }
