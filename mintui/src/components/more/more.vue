@@ -7,7 +7,7 @@
     </mt-navbar>
 
     <div style="margin-top: 13%">
-      <load-more ref="children" @get-server-data="getServerData" :req-param-add="reqParamAdd">
+      <load-more ref="children" :req-param-add="reqParamAdd" :req-url="reqUrl" @init="init">
         <div slot="viewTemplate">
           <ul style="margin: 0;padding: 0">
             <li v-for="item in list" @click="friendDetail(item.userId)">
@@ -70,6 +70,7 @@
     name: "more",
     data() {
       return {
+        reqUrl: '/app/aroundFriend_appUser.do',
         selected: 'all',
         overLayer: false,
         phone: '',
@@ -98,25 +99,11 @@
       }
     },
     methods: {
-      getServerData(reqParam) {
-        if(this.$store.getters.getLeaveList) {
-          this.list = this.$store.getters.getList;
-        } else {
-          this.$http.post('/app/aroundFriend_appUser.do', reqParam).then(function (response) {
-            if (response.data.code === 1000) {
-              if (reqParam.pageNow === 1) {
-                this.list = response.data.list;
-              } else {
-                this.list = this.list.concat(response.data.list);
-              }
-            }
-            this.$store.commit('modBeforeJumpPram', reqParam);
-            this.$store.commit('modList', this.list);
-          }.bind(this));
-        }
+      init(param) {
+        this.list = param;
       },
       friendDetail(userId) {
-        this.$store.commit('modLeaveList', true);
+        this.$store.commit('modIsLeaveList', true);
         let token = Cookies.get("token");
         if (!token) {
           this.overLayer = true;

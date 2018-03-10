@@ -19,7 +19,7 @@
         <slot name="viewTemplate">
         </slot>
       </mt-loadmore>
-      <div v-show="this.$store.getters.getAllLoaded" :class="{'no-data-show': this.$store.getters.getNoDataShow}"
+      <div v-show="noMoreData" :class="{'no-data-show': zeroRowData}"
            style="color: grey;text-align: center;">
         <span>暂时没数据...</span>
       </div>
@@ -28,7 +28,9 @@
 </template>
 
 <script type="text/babel">
-  import { Indicator } from 'mint-ui';
+  import {Indicator} from 'mint-ui';
+  import fetch from '../../axios/fetch';
+
   export default {
     props: {
       topDropText: {
@@ -61,6 +63,10 @@
         default() {
           return {}
         }
+      },
+      reqUrl: {
+        type: String,
+        default: ''
       }
     },
     data() {
@@ -72,82 +78,13 @@
         moveTranslate: 0,
         scroll: 0,
         showSearchBar: true,
-        'no-data-show': 'no-data-show'
+        'no-data-show': 'no-data-show',
+        list: [],
+        noMoreData: this.$store.getters.getNoMoreData,
+        zeroRowData: false,
       }
     },
     methods: {
-      handleBottomChange(status) {
-        this.bottomStatus = status;
-      },
-      handleTopChange(status) {
-        this.moveTranslate = 1;
-        this.topStatus = status;
-      },
-      translateChange(translate) {
-        const translateNum = +translate;
-        this.translate = translateNum.toFixed(2);
-        this.moveTranslate = (1 + translateNum / 70).toFixed(2);
-      },
-      loadTop() {
-        this.$store.commit('modLeaveList', false);
-
-        this.init(false);
-        this.$store.commit('modPullOrDrop', false);
-        let _this = this;
-        var interval = setInterval(function () {
-          let pullOrDrop = _this.$store.getters.getPullOrDrop;
-          if (pullOrDrop) {
-            _this.$refs.loadmore.onTopLoaded(); //目前采用定时访问的方式 查看服务器是否响应成功, 最好是采用回调的方式
-            clearInterval(interval);
-          }
-        }, 200);
-      },
-      loadBottom() {
-        if (this.$store.getters.getLeaveList) {
-          this.reqParamInit.pageNow = this.$store.getters.getBeforeJumpPram.pageNow + 1;
-        } else {
-          this.reqParamInit.pageNow++;
-        }
-        this.$store.commit('modLeaveList', false);
-
-        this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd)); //Object.assign() 合并对象
-
-        this.$store.commit('modPullOrDrop', false);
-        let _this = this;
-        var interval = setInterval(function () {
-          let pullOrDrop = _this.$store.getters.getPullOrDrop;
-          if (pullOrDrop) {
-            _this.$refs.loadmore.onBottomLoaded();
-            clearInterval(interval);
-          }
-        }, 200);
-      },
-
-      init(flag) {
-        if(flag && !this.$store.getters.getLeaveList) {
-          Indicator.open({
-            spinnerType: 'fading-circle'
-          });
-        }
-        this.reqParamInit.pageNow = 1;
-        this.$emit('get-server-data', Object.assign(this.reqParamInit, this.reqParamAdd));
-        this.$nextTick(function () {
-          document.getElementById('loadMoreWrapper').scrollTop = this.$store.getters.getPosition;
-        });
-
-        if(flag && !this.$store.getters.getLeaveList) { //清除加载时动画
-          let _this = this;
-          var interval = setInterval(function () {
-            let pullOrDrop = _this.$store.getters.getPullOrDrop;
-            if (pullOrDrop) {
-              Indicator.close();
-              _this.$store.commit('modPullOrDrop', false);
-              clearInterval(interval);
-            }
-          }, 100);
-        }
-      },
-
       scrollEve() {
         let after = document.getElementById('loadMoreWrapper').scrollTop;
         if (typeof this.$slots.viewSearchBar !== 'undefined') {
@@ -161,16 +98,88 @@
         this.scroll = after;
         this.$store.commit('modPosition', after);
       },
+      handleBottomChange(status) {
+        this.bottomStatus = status;
+      },
+      handleTopChange(status) {
+        this.moveTranslate = 1;
+        this.topStatus = status;
+      },
+      translateChange(translate) {
+        const translateNum = +translate;
+        this.translate = translateNum.toFixed(2);
+        this.moveTranslate = (1 + translateNum / 70).toFixed(2);
+      },
+      loadTop() {
+        this.init(false, 'down');
+      },
+      loadBottom() {
+        this.init(false, 'up');
+      },
+
+      init(flag, type) {
+        let isLeave = this.$store.getters.getIsLeaveList; //是否离开过列表
+        if (isLeave) {
+          this.list = this.$store.getters.getLeaveList;
+          this.$emit('init', this.list);
+          this.$nextTick(function () {
+            document.getElementById('loadMoreWrapper').scrollTop = this.$store.getters.getPosition;
+          });
+          this.reqParamInit.pageNow = this.$store.getters.getBeforeJumpPram.pageNow;
+        } else {
+          if (flag) {
+            Indicator.open({ //弹出加载中遮罩
+              spinnerType: 'fading-circle'
+            });
+          }
+          if (type === 'down') { //下拉刷新
+            this.reqParamInit.pageNow = 1;
+          } else if (type === 'up') { //上拉加载
+            this.reqParamInit.pageNow++;
+          }
+          this.$store.commit('modIsLeaveList', false);
+
+          this.noMoreData = false;
+          this.zeroRowData = false;
+          let _this = this;
+          let param = Object.assign(this.reqParamInit, this.reqParamAdd);
+
+          fetch(this.reqUrl, param).then(function (response) {
+            if (type === 'down') {
+              _this.list = response.list;
+              _this.$refs.loadmore.onTopLoaded(); //关闭下拉刷新中动画
+            } else if (type === 'up') {
+              _this.list = _this.list.concat(response.list);
+              _this.$refs.loadmore.onBottomLoaded(); //关闭上拉加载中动画
+            }
+            _this.$emit('init', _this.list); //调用父组件init属性对应的方法, 更新list
+
+            if (response.pageNow === response.pageCount) {
+              _this.noMoreData = true; //没有下一页, 禁止上拉加载
+            }
+            if (_this.list.length === 0) {
+              _this.zeroRowData = true; //0条数据, 提示没数据 距离顶部50%
+            }
+
+            if (flag) {
+              Indicator.close(); //关闭加载中遮罩
+            }
+            _this.$store.commit('modBeforeJumpPram', param); //保留请求的参数
+            _this.$store.commit('modLeaveList', _this.list); //保留返回的数据
+          });
+        }
+      },
     },
     mounted() {
-      this.init(true);
+      this.init(true, 'down');
+      this.$store.commit('modIsLeaveList', false);
       this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top - 60;
       document.getElementById('loadMoreWrapper').addEventListener('scroll', this.scrollEve); //添加监听滑动事件
     },
     watch: {
       'reqParamAdd': { //监听请求服务器额外的参数(一般搜索栏), 变化后重新发起请求
         handler(newValue, oldValue) {
-          this.init(true);
+          this.init(true, 'down');
         },
         deep: true
       }
@@ -229,7 +238,7 @@
   }
 
   .no-data-show {
-    margin-top: 30%;
+    margin-top: 50%;
   }
 
 </style>

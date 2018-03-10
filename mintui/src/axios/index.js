@@ -8,7 +8,7 @@ Vue.prototype.$http = axios;
 
 axios.defaults.timeout = 20000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';  //配置请求头
-axios.defaults.baseURL = 'http://192.168.1.103:8080';   //配置接口地址
+axios.defaults.baseURL = 'http://192.168.1.200:8080';   //配置接口地址
 
 //添加请求拦截器(在发送请求之前做某件事)
 axios.interceptors.request.use((config) => {
@@ -36,20 +36,21 @@ axios.interceptors.response.use((response) =>{
     });
   } else {
     if(response.data.hasOwnProperty('pageNow') && response.data.hasOwnProperty('pageCount')) {
-      if(response.data.pageNow === 1 && response.data.list.length === 0) {
-        store.commit('modNoDataShow', true);
+      let pageNow = response.data.pageNow;
+      let pageCount = response.data.pageCount;
+      if(pageNow === 1 && response.data.list.length === 0) {
+
       } else {
-        store.commit('modNoDataShow', false);
         Toast({ //说明是分页调用, 友好显示当前页和总页数 (当前页为第一页且有数据才显示)
-          message: response.data.pageNow + " / " + response.data.pageCount,
+          message: pageNow + " / " + pageCount,
           position: 'bottom',
           duration: 1000
         });
       }
-      store.commit('modAllLoaded', response.data.pageNow === response.data.pageCount); //改变是否还能上拉加载, 为true则不能继续上拉
+      store.commit('modAllLoaded', pageNow === pageCount); //改变是否还能上拉加载, 为true则不能继续上拉
+      store.commit('modNoMoreData', pageNow === pageCount);  //显示没有更多数据
     }
   }
-  store.commit('modPullOrDrop', true); //数据是否请求完毕
 
   return response;
 }, (error) => {
@@ -58,43 +59,5 @@ axios.interceptors.response.use((response) =>{
     position: 'middle',
     duration: 2000
   });
-  store.commit('modPullOrDrop', true); //数据是否请求完毕, 只是错误了
   return Promise.reject(error);
 });
-
-//返回一个Promise(发送post请求)
-export function fetch(url, params) {
-  return new Promise((resolve, reject) => {
-    axios.post(url, params)
-      .then(response => {
-        resolve(response.data);
-      }, err => {
-        reject(err);
-      })
-      .catch((error) => {
-        reject(error)
-      })
-  })
-};
-
-export default {
-  /**
-   * 用户登录
-   */
-  Login(params) {
-    return fetch('/app/login_appUser.do', params)
-  },
-  /**
-   * 用户注册
-   */
-  Regist(params) {
-    return fetch('/users/api/userRegist', params)
-  },
-  /**
-   * 发送注册验证码
-   */
-  RegistVerifiCode(tellphone) {
-    return fetch('/users/api/registVerifiCode', {tellphone: tellphone})
-  }
-}
-

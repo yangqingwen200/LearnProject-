@@ -78,9 +78,9 @@
         this.$http.post('/app/aroundFriend_appUser.do', reqParam).then(function (response) {
           if (response.data.code === 1000) {
             if (reqParam.pageNow === 1) {
-              this.list = response.data.list;
+              this.list = response.data.leaveList;
             } else {
-              this.list = this.list.concat(response.data.list);
+              this.list = this.list.concat(response.data.leaveList);
             }
           }
         }.bind(this));

@@ -5,7 +5,6 @@ import personal from '../components/mine/personal'
 import around from '../components/around/around'
 import more from '../components/more/more'
 import friendDetail from '../components/more/friendDetail'
-import schoolDetail from '../components/index/schoolDetail'
 
 export default [
   {
@@ -31,11 +30,6 @@ export default [
     path: '/personal',
     name: 'personal',
     component: personal
-  },
-  {
-    path: '/school/detail/:id',
-    name: 'detail',
-    component: schoolDetail
   },
   {
     path: '/more/friendDetail/:id',

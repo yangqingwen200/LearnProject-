@@ -10,7 +10,7 @@
       </top-nav-bar>
     </div>
     <div>
-      <load-more ref="children" @get-server-data="getServerData" :req-param-add="reqParamAdd">
+      <load-more ref="children" @init="init" :req-param-add="reqParamAdd" :req-url="reqUrl">
         <div slot="viewTemplate">
           <ul style="margin: 0;padding: 0;">
             <li v-for="item in list" @click="articleDetail(item.id)" style="margin-top: -5px;">
@@ -54,10 +54,10 @@
           {name: '关注', moduleId: 'focus'},
           {name: '推荐', moduleId: 'travel'},
           {name: '游戏', moduleId: 'game'},
-          {name: '财经', moduleId: 'finance'},
           {name: '居家', moduleId: 'home'},
-          {name: '科技', moduleId: 'society'},
           {name: '国际', moduleId: 'international'},
+          {name: '财经', moduleId: 'finance'},
+          {name: '科技', moduleId: 'society'},
           {name: '健康', moduleId: 'health'},
           {name: '汽车', moduleId: 'car'},
           {name: '历史', moduleId: 'history'},
@@ -72,6 +72,7 @@
           pageSize: 10,
           category: this.$store.getters.getLastClickModule
         },
+        reqUrl: '/app/index_appUser.do'
       };
     },
     components: {
@@ -79,26 +80,12 @@
       topNavBar
     },
     methods: {
-      getServerData(reqParam) {
-        if (this.$store.getters.getLeaveList) {
-          this.list = this.$store.getters.getList;
-        } else {
-          this.$http.post('/app/index_appUser.do', reqParam).then(function (response) {
-            if (response.data.code === 1000) {
-              if (reqParam.pageNow === 1) {
-                this.list = response.data.list;
-              } else {
-                this.list = this.list.concat(response.data.list);
-              }
-            }
-            this.$store.commit('modBeforeJumpPram', reqParam);
-            this.$store.commit('modList', this.list);
-          }.bind(this));
-        }
+      init(param) {
+        this.list = param;
       },
       articleDetail(articleId) {
         this.$store.commit('modHistoryId', articleId); //保存被点击过文章的id, 渲染列表显示不同颜色
-        this.$store.commit('modLeaveList', true);
+        this.$store.commit('modIsLeaveList', true);
         this.$router.push({
           name: 'articleDetail',
           params: {
@@ -111,12 +98,14 @@
           return;  //当前处于这个模块, 再次点击, 直接返回.
         }
         this.list = []; //先清空list, 否则模块之间切换会有闪动
-        this.$store.commit('modLeaveList', false);
+        this.$store.commit('modIsLeaveList', false);
         this.$store.commit('modLastClickModule', modules); //保存最后点击模块
         this.module = modules;
         this.reqParamAdd.category = modules;
       }
     },
+    mounted() {
+    }
   }
 </script>
 

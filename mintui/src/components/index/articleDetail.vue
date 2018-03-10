@@ -39,13 +39,13 @@
       </div>
       <div style="text-align: center;margin-top: 1.5rem;margin-bottom: 1rem">
         <span @click="getZanContent" class="zan-cai-num">
-          <img v-if="!zanContent" src="../../assets/thumb22.png" align="middle" style="width: 10%"/>
-          <img v-if="zanContent" src="../../assets/thumb20.png" align="middle" style="width: 10%"/>
+          <img v-if="!zanContent" src="../../assets/thumb22.png" align="middle" style="width: 2rem"/>
+          <img v-if="zanContent" src="../../assets/thumb20.png" align="middle" style="width: 2rem"/>
           <span style="vertical-align: sub;margin-left: -0.6rem">888</span>
         </span>
         <span @click="getCaiContent" class="zan-cai-num" style="margin-left: 10%">
-          <img v-if="!caiContent" src="../../assets/thumb21.png" align="middle" style="width: 10%;"/>
-          <img v-if="caiContent" src="../../assets/thumb19.png" align="middle" style="width: 10%;"/>
+          <img v-if="!caiContent" src="../../assets/thumb21.png" align="middle" style="width: 2rem;"/>
+          <img v-if="caiContent" src="../../assets/thumb19.png" align="middle" style="width: 2rem;"/>
           <span style="vertical-align: sub;margin-left: -0.6rem">999</span>
         </span>
       </div>

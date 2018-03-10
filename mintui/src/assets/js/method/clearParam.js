@@ -6,8 +6,8 @@ const clearParam = {
   install: function (Vue) { //有install后, 才能使用use方法
     Vue.prototype.clearJumpParam = function (){
       store.commit('modBeforeJumpPram', {});
-      store.commit('modList', []);
-      store.commit('modLeaveList', false);
+      store.commit('modLeaveList', []);
+      store.commit('modIsLeaveList', false);
       store.commit('modPosition', 0);
     };
   }
