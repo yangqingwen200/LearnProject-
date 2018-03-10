@@ -1,14 +1,32 @@
 <template>
   <div id="articleDetail">
-    <div>
-      <div style="font-weight: bold;font-size: 1.25rem">
+    <div id="articleTile">
+      <div style="font-weight: bold;font-size: 1.2rem;padding-top: 0.3rem">
         中国还有哪鲜为人知可以超越腾讯、阿里的公司仍未上市？
       </div>
-      <div style="text-align: right;margin: 0.5rem;font-size: 0.9rem">
-        上观 2018-03-07 06:30:47
+      <div style="margin: 1.5rem 0 0.5rem 0;">
+        <table style="width: 100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td rowspan="3" align="middle">
+              <img src="../../assets/header.jpeg" style="width: 2.5rem;border-radius: 50%"/>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight: bold;font-size: 0.9rem">
+              上观
+            </td>
+            <td rowspan="2">
+              <button class="focus-button">关注</button>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 0.8rem;color: #888">
+              2018-03-07 06:30:47
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
-    <hr class="my-hr">
     <div id="articleContent">
       <div>
         在全国政协十三届一次会议上，施一公在参与讨论《政府工作报告》时发现，过去5年里，国内有效发明专利拥有量增加了两倍，技术交易额翻了一番。“如果较真一点，假设国内有效发明专利从100增加到300，技术交易额从100变成了200，那么单个专利交易额其实是不增反降了，是5年前的66%。”施一公算了一笔账。<br/><br/>
@@ -23,12 +41,12 @@
         <span @click="getZanContent" class="zan-cai-num">
           <img v-if="!zanContent" src="../../assets/thumb22.png" align="middle" style="width: 10%"/>
           <img v-if="zanContent" src="../../assets/thumb20.png" align="middle" style="width: 10%"/>
-          <span style="vertical-align: -webkit-baseline-middle;margin-left: -5px">888</span>
+          <span style="vertical-align: sub;margin-left: -0.6rem">888</span>
         </span>
         <span @click="getCaiContent" class="zan-cai-num" style="margin-left: 10%">
           <img v-if="!caiContent" src="../../assets/thumb21.png" align="middle" style="width: 10%;"/>
           <img v-if="caiContent" src="../../assets/thumb19.png" align="middle" style="width: 10%;"/>
-          <span style="vertical-align: -webkit-baseline-middle;margin-left: -5px">9999</span>
+          <span style="vertical-align: sub;margin-left: -0.6rem">999</span>
         </span>
       </div>
 
@@ -37,29 +55,29 @@
     <div id="articleComment" style="margin-bottom: 3rem;">
       <div>
         <span v-for="item in comments">
-          <table class="comment-table" border="0" cellpadding="0" cellspacing="0">
+          <table class="comment-table" cellpadding="0" cellspacing="0">
             <tr>
               <td rowspan="4" style="width: 15%;" align="center" valign="top">
-                <img src="../../assets/header.jpeg" style="width: 80%;border-radius: 50%;margin-top: 15%"/>
+                <img src="../../assets/header.jpeg" style="width: 80%;border-radius: 50%;margin-top: 20%"/>
               </td>
             </tr>
-            <tr>
-              <td style="color: #26a2ff">游客_1573</td>
+            <tr style="font-size: 0.8rem">
+              <td style="color: #26a2ff;">游客_1573</td>
               <td align="right">
-                <img :src="zanCommentPicUrl" style="width: 0.8rem;vertical-align: middle" @click="addZan($event)"/>
+                <img :src="zanCommentPicUrl" style="width: 0.9rem;vertical-align: middle" @click="addZan($event)"/>
                 <span style="vertical-align: middle;">123</span>
               </td>
             </tr>
             <tr>
-              <td colspan="2">
+              <td colspan="2" style="font-size: 0.9rem">
                 <span v-html="item.content"></span>
               </td>
             </tr>
             <tr>
-              <td colspan="2">
+              <td colspan="2" style="font-size: 0.75rem;">
                 <span v-html="item.time"></span> ·
                 <div class="comment-res">
-                  123回复
+                  23回复
                 </div>
               </td>
             </tr>
@@ -74,7 +92,8 @@
             <img src="../../assets/arrow270.png" align="middle" style="width: 1.3rem"/>
           </td>
           <td>
-            <input id="discussing" :class="{'my-input': true, 'my-input-discuss': discussing}" :placeholder="placeholder"
+            <input id="discussing" :class="{'my-input': true, 'my-input-discuss': discussing}"
+                   :placeholder="placeholder"
                    v-model="discuss" v-on:blur="inputBlur" @focus="inputClick"/>
           </td>
           <td v-if="!discussing" @click="goToComments">
@@ -91,7 +110,10 @@
             <img src="../../assets/light53.png" align="middle" style="width: 1.65rem;margin: 0 0.5rem;"/>
           </td>
           <td v-if="discussing" @click="pubComment" align="middle">
-            <button :class="{'my-button': 'my-button', 'my-button-ok': myButtonOk, 'my-button-bao': this.discuss.trim() !== '' && isJuBao}">{{buttonValue}}</button>
+            <button
+              :class="{'my-button': 'my-button', 'my-button-ok': myButtonOk, 'my-button-bao': this.discuss.trim() !== '' && isJuBao}">
+              {{buttonValue}}
+            </button>
           </td>
         </tr>
 
@@ -123,8 +145,8 @@
         'my-button-bao': 'my-button-bao',
         comments: [
           {content: "JavaScript默认的时间格式我们一般情况下不会用", time: new Date().toLocaleString()},
-          {content: "我发现评论都有好多版本啊。我亲身经历过，讲下我经历的版本。就是原先北方大区有个玩家玩CF猝死了，而后北方大区就出现了所谓的闹鬼（其实后来是证实了黑客在搞鬼）时间是每晚的11.30分", time: new Date().toLocaleString()},
-          {content: "一个飞虎队，一个猎狐者，还有个母体僵尸。然后这三个排队绕着固定路线跑来跑去，头上都是没名字的。打也打不到，抓也抓不到。除此之外我们还能正常玩游戏，等到了第8个回合结束，本以为就这么结束退游戏，但是又循环到了第2回合", time: new Date().toLocaleString()},
+          {content: "我发现评论都有好多版本啊。我亲身经历过，讲下我经历的版本。", time: new Date().toLocaleString()},
+          {content: "一个飞虎队，一个猎狐者，还有个母体僵尸。然后这三个排队绕着固定路线跑来跑去，头上都是没名字的。打也打不到，抓也抓不到。", time: new Date().toLocaleString()},
         ]
       };
     },
@@ -134,14 +156,14 @@
       },
       inputBlur() {
         this.discussing = false;
-        if(this.discuss.trim() === '' && this.isJuBao) {
+        if (this.discuss.trim() === '' && this.isJuBao) {
           this.placeholder = '发表神评论...';
           this.isJuBao = false;
         }
       },
       inputClick() {
         this.discussing = true;
-        if(this.isJuBao) {
+        if (this.isJuBao) {
           this.buttonValue = '举报';
           this.placeholder = '请填写举报理由...';
         } else {
@@ -167,12 +189,12 @@
         this.caiContent = !this.caiContent;
       },
       pubComment() {
-        if(this.discuss.trim() === '') {
+        if (this.discuss.trim() === '') {
           this.isJuBao = false;
           this.placeholder = '发表神评论...';
           return;
         }
-        if(this.isJuBao) {
+        if (this.isJuBao) {
           console.info("举报成功: " + this.discuss);
           this.isJuBao = false;
           this.placeholder = '发表神评论...';
@@ -206,9 +228,20 @@
 </script>
 
 <style scoped>
+  .focus-button {
+    float: right;
+    border: 0;
+    border-radius: 0.2rem;
+    height: 2.0rem;
+    background-color: #26a2ff;
+    margin: 0.5rem;
+    padding: 0 1.2rem;
+    color: white;
+  }
+
   .comment-table {
     width: 100%;
-    font-size: 0.65rem;
+    font-size: 0.95rem;
     border-collapse: separate;
     border-spacing: 0px 0.4rem;
     color: black;
@@ -274,13 +307,13 @@
     display: inline-block;
     background-color: #f0f0f0;
     border-radius: 1rem;
-    padding: 0.2rem 0.3rem;
+    padding: 0.25rem 0.35rem;
   }
 
   .zan-cai-num {
     border: 1px solid #ebebeb;
     height: 16rem;
-    padding: 0.5rem 2rem 1rem;
+    padding: 0.2rem 1.5rem 0.8rem;
     border-radius: 2rem;
   }
 
