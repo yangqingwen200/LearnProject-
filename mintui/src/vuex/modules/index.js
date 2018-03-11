@@ -1,6 +1,6 @@
 const commons = {
   state: {
-    lastClickModule: 'game',
+    lastClickModule: 'travel',
     historyId: new Set(),
     topNavBarPost: 0
   },
