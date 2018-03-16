@@ -2,7 +2,21 @@ const commons = {
   state: {
     lastClickModule: 'travel',
     historyId: new Set(),
-    topNavBarPost: 0
+    topNavBarPost: 0,
+    lastModuleIndex: 0,
+    topNavBarModules: [  //模块列表, 应当从服务器获取
+      {name: '推荐', moduleId: 'travel'},
+      {name: '游戏', moduleId: 'game'},
+      {name: '居家', moduleId: 'home'},
+      {name: '国际', moduleId: 'international'},
+      {name: '财经', moduleId: 'finance'},
+      {name: '科技', moduleId: 'society'},
+      {name: '健康', moduleId: 'health'},
+      {name: '汽车', moduleId: 'car'},
+      {name: '历史', moduleId: 'history'},
+      {name: '数码', moduleId: 'digital'},
+      {name: '时尚', moduleId: 'fashion'},
+    ]
   },
   getters: {
     getLastClickModule: function (state) {
@@ -14,6 +28,12 @@ const commons = {
     getTopNavBarPost: function (state) {
       return state.topNavBarPost;
     },
+    getLastModuleIndex: function (state) {
+      return state.lastModuleIndex;
+    },
+    getTopNavBarModules: function (state) {
+      return state.topNavBarModules;
+    }
   },
   mutations: {
     modLastClickModule(state, flag) {
@@ -24,6 +44,9 @@ const commons = {
     },
     modTopNavBarPost(state, flag) {
       state.topNavBarPost = flag;
+    },
+    modLastModuleIndex(state, flag) {
+      state.lastModuleIndex = flag;
     },
   }
 };

@@ -8,7 +8,7 @@
         <table style="width: 100%" cellpadding="0" cellspacing="0">
           <tr>
             <td rowspan="3" align="middle">
-              <img src="../../assets/header.jpeg" style="width: 2.5rem;border-radius: 50%"/>
+              <img src="../../assets/images/header.jpeg" style="width: 2.5rem;border-radius: 50%"/>
             </td>
           </tr>
           <tr>
@@ -39,13 +39,13 @@
       </div>
       <div style="text-align: center;margin-top: 1.5rem;margin-bottom: 1rem">
         <span @click="getZanContent" class="zan-cai-num">
-          <img v-if="!zanContent" src="../../assets/thumb22.png" align="middle" style="width: 2rem"/>
-          <img v-if="zanContent" src="../../assets/thumb20.png" align="middle" style="width: 2rem"/>
+          <img v-if="!zanContent" src="../../assets/images/thumb22.png" align="middle" style="width: 2rem"/>
+          <img v-if="zanContent" src="../../assets/images/thumb20.png" align="middle" style="width: 2rem"/>
           <span style="vertical-align: sub;margin-left: -0.6rem">888</span>
         </span>
         <span @click="getCaiContent" class="zan-cai-num" style="margin-left: 10%">
-          <img v-if="!caiContent" src="../../assets/thumb21.png" align="middle" style="width: 2rem;"/>
-          <img v-if="caiContent" src="../../assets/thumb19.png" align="middle" style="width: 2rem;"/>
+          <img v-if="!caiContent" src="../../assets/images/thumb21.png" align="middle" style="width: 2rem;"/>
+          <img v-if="caiContent" src="../../assets/images/thumb19.png" align="middle" style="width: 2rem;"/>
           <span style="vertical-align: sub;margin-left: -0.6rem">999</span>
         </span>
       </div>
@@ -58,7 +58,7 @@
           <table class="comment-table" cellpadding="0" cellspacing="0">
             <tr>
               <td rowspan="4" style="width: 15%;" align="center" valign="top">
-                <img src="../../assets/header.jpeg" style="width: 80%;border-radius: 50%;margin-top: 20%"/>
+                <img src="../../assets/images/header.jpeg" style="width: 80%;border-radius: 50%;margin-top: 20%"/>
               </td>
             </tr>
             <tr style="font-size: 0.8rem">
@@ -89,7 +89,7 @@
       <table cellspacing="0" cellpadding="0" style="width: 100%">
         <tr>
           <td v-show="!discussing" @click="goBackList" style="padding: 0 1rem 0.3rem 0.7rem;">
-            <img src="../../assets/arrow270.png" align="middle" style="width: 1.3rem"/>
+            <img src="../../assets/images/arrow270.png" align="middle" style="width: 1.3rem"/>
           </td>
           <td>
             <input id="discussing" :class="{'my-input': true, 'my-input-discuss': discussing}"
@@ -97,17 +97,17 @@
                    v-model="discuss" v-on:blur="inputBlur" @focus="inputClick"/>
           </td>
           <td v-if="!discussing" @click="goToComments">
-            <img src="../../assets/message5.png" style="width: 1.8rem;float: left" align="middle"/>
+            <img src="../../assets/images/message5.png" style="width: 1.8rem;float: left" align="middle"/>
             <span class="commentNum">99+</span>
           </td>
           <td v-if="!discussing" @click="getCollection">
-            <img v-show="!collection" src="../../assets/star_empty.png" align="middle"
+            <img v-show="!collection" src="../../assets/images/star_empty.png" align="middle"
                  style="width: 1.8rem;margin: 0 0.5rem;"/>
-            <img v-show="collection" src="../../assets/star_fill.png" align="middle"
+            <img v-show="collection" src="../../assets/images/star_fill.png" align="middle"
                  style="width: 1.8rem;margin: 0 0.5rem;"/>
           </td>
           <td v-if="!discussing" @click="report">
-            <img src="../../assets/light53.png" align="middle" style="width: 1.65rem;margin: 0 0.5rem;"/>
+            <img src="../../assets/images/light53.png" align="middle" style="width: 1.65rem;margin: 0 0.5rem;"/>
           </td>
           <td v-if="discussing" @click="pubComment" align="middle">
             <button
@@ -137,7 +137,7 @@
         collection: false,
         zanContent: false,
         caiContent: false,
-        zanCommentPicUrl: require('../../assets/icon_like.png'), //动态切换图片
+        zanCommentPicUrl: require('../../assets/images/icon_like.png'), //动态切换图片
         'my-input': 'my-input',
         'my-input-discuss': 'my-input-discuss',
         'my-button': 'my-button',
@@ -205,7 +205,7 @@
         this.discuss = '';
       },
       addZan(e) {
-        e.target.src = require('../../assets/icon_like_alt.png');
+        e.target.src = require('../../assets/images/icon_like_alt.png');
         e.target.nextElementSibling.innerHTML = "456"
       },
       report() {

@@ -14,7 +14,7 @@
               <table border="0" style="width: 100%">
                 <tr>
                   <td rowspan="3" style="width: 15%;text-align: center">
-                    <img src="../../assets/logo.png" style="height: 18%;"/>
+                    <img src="../../assets/images/logo.png" style="height: 18%;"/>
                   </td>
                 </tr>
                 <tr>

@@ -8,7 +8,7 @@ Vue.prototype.$http = axios;
 
 axios.defaults.timeout = 20000; //响应时间
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';  //配置请求头
-axios.defaults.baseURL = 'http://192.168.1.200:8080';   //配置接口地址
+axios.defaults.baseURL = 'http://192.168.1.247:8082';   //配置接口地址
 
 //添加请求拦截器(在发送请求之前做某件事)
 axios.interceptors.request.use((config) => {
@@ -55,7 +55,7 @@ axios.interceptors.response.use((response) =>{
   return response;
 }, (error) => {
   Toast({
-    message: '网络错误...',
+    message: '网络有小问题...',
     position: 'middle',
     duration: 2000
   });

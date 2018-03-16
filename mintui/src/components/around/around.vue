@@ -2,7 +2,7 @@
   <div>
     <load-more ref="children" @get-server-data="getServerData" :req-param-add="reqParamAdd">
       <div slot="viewSearchBar" class="searchBarSlot">
-        <img style="display: inline-block; vertical-align: middle;" src="../../assets/search.png"/>
+        <img style="display: inline-block; vertical-align: middle;" src="../../assets/images/search.png"/>
         <input type="text" class="searchBarSlotInput" v-model="reqParamAdd.name" placeholder="请输入姓名..."/>
       </div>
       <div slot="viewTemplate">
@@ -11,7 +11,7 @@
             <table border="0" style="width: 100%">
               <tr>
                 <td rowspan="5" style="width: 35%;padding-right: 20px;padding-left: 15px"><img
-                  src="../../assets/logo.png" style="width: 100%"/></td>
+                  src="../../assets/images/logo.png" style="width: 100%"/></td>
               </tr>
               <tr>
                 <td>姓名: <span v-text="item.acName"></span>

@@ -50,20 +50,7 @@
     name: "more",
     data() {
       return {
-        topNavBarModules: [  //模块列表, 应当从服务器获取
-          {name: '关注', moduleId: 'focus'},
-          {name: '推荐', moduleId: 'travel'},
-          {name: '游戏', moduleId: 'game'},
-          {name: '居家', moduleId: 'home'},
-          {name: '国际', moduleId: 'international'},
-          {name: '财经', moduleId: 'finance'},
-          {name: '科技', moduleId: 'society'},
-          {name: '健康', moduleId: 'health'},
-          {name: '汽车', moduleId: 'car'},
-          {name: '历史', moduleId: 'history'},
-          {name: '数码', moduleId: 'digital'},
-          {name: '时尚', moduleId: 'fashion'},
-        ],
+        topNavBarModules: this.$store.getters.getTopNavBarModules,
         module: this.$store.getters.getLastClickModule, //进入页面默认选中模块
         historyId: this.$store.getters.getHistoryId,
         'history-id': 'history-id',

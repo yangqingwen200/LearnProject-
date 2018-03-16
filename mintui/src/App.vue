@@ -5,19 +5,19 @@
     </div>
     <mt-tabbar v-model="selected" fixed v-if="tabShow">
       <mt-tab-item id="home" @click.native="home">
-        <img slot="icon" src="./assets/home.png">
+        <img slot="icon" src="./assets/images/home.png">
         首页
       </mt-tab-item>
       <mt-tab-item id="around" @click.native="video">
-        <img slot="icon" src="./assets/video.png">
+        <img slot="icon" src="./assets/images/video.png">
         视频
       </mt-tab-item>
       <mt-tab-item id="more" @click.native="more">
-        <img slot="icon" src="./assets/information.png">
+        <img slot="icon" src="./assets/images/information.png">
         微头条
       </mt-tab-item>
       <mt-tab-item id="mine" @click.native="mine">
-        <img slot="icon" src="./assets/login.png">
+        <img slot="icon" src="./assets/images/login.png">
         我的
       </mt-tab-item>
     </mt-tabbar>

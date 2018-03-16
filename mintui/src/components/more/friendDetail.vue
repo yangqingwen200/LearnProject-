@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: center;">
-    <img src="../../assets/logo.png" style="width: 45%"/>
+    <img src="../../assets/images/logo.png" style="width: 45%"/>
     <mt-field readonly :style="[inputStyle]" label="姓名" v-model="detail.acName"></mt-field>
     <mt-field readonly :style="[inputStyle]" label="手机号码" v-model="detail.mobile"></mt-field>
     <mt-field readonly :style="[inputStyle]" label="状态" v-model="detail.state == 'WBK' ? '未认证' : '已认证'"></mt-field>
