@@ -1,57 +1,58 @@
 <template>
   <div>
-    <div>
-      <top-nav-bar>
-        <div slot="topBar">
-          <div v-for="item in topNavBarModules" @click="changeModules(item.moduleId)"
-               :class="{'top-nar-bar': module === item.moduleId}">{{item.name}}
+    <top-nav-bar>
+      <div slot="topBar">
+        <div v-for="item in topNavBarModules" @click="changeModules(item.moduleId)"
+             :class="{'top-nar-bar': module === item.moduleId}">{{item.name}}
+        </div>
+      </div>
+    </top-nav-bar>
+    <slide :top-nav-bar-modules="topNavBarModules" :last-click-module="module" @slide-method="changeModules">
+      <div slot="slideBar">
+        <load-more ref="children" @init="init" :req-param-add="reqParamAdd" :req-url="reqUrl">
+          <div slot="viewTemplate">
+            <ul style="margin: 0;padding: 0;">
+              <li v-for="item in list" @click="articleDetail(item.id)" style="margin-top: -5px;">
+                <table border="0" style="width: 100%">
+                  <tr>
+                    <td><span v-text="item.title" :class="{'history-id': historyId.has(item.id)}"></span></td>
+                    <td rowspan="2" style="width: 30%">
+                      <img :src="item.middle_image" style="width: 100%;border-radius: 3px;"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size: 0.7rem;color: #a9acb1">
+                      <span v-text="item.source"></span>
+                      <span v-text="item.comments_count" style="margin-left: 3px"></span>评论
+                      <span v-text="item.publish" style="margin-left: 3px"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">
+                      <hr class="my-hr">
+                    </td>
+                  </tr>
+                </table>
+              </li>
+            </ul>
           </div>
-        </div>
-      </top-nav-bar>
-    </div>
-    <div>
-      <load-more ref="children" @init="init" :req-param-add="reqParamAdd" :req-url="reqUrl">
-        <div slot="viewTemplate">
-          <ul style="margin: 0;padding: 0;">
-            <li v-for="item in list" @click="articleDetail(item.id)" style="margin-top: -5px;">
-              <table border="0" style="width: 100%">
-                <tr>
-                  <td><span v-text="item.title" :class="{'history-id': historyId.has(item.id)}"></span></td>
-                  <td rowspan="2" style="width: 30%">
-                    <img :src="item.middle_image" style="width: 100%;border-radius: 3px;"/>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-size: 0.7rem;color: #a9acb1">
-                    <span v-text="item.source"></span>
-                    <span v-text="item.comments_count" style="margin-left: 3px"></span>评论
-                    <span v-text="item.publish" style="margin-left: 3px"></span>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="3">
-                    <hr class="my-hr">
-                  </td>
-                </tr>
-              </table>
-            </li>
-          </ul>
-        </div>
-      </load-more>
-    </div>
+        </load-more>
+      </div>
+    </slide>
   </div>
 </template>
 
 <script>
   import loadMore from '../commons/loadMore'
   import topNavBar from '../commons/topNavBar'
+  import slide from '../commons/slide'
 
   export default {
     name: "more",
     data() {
       return {
         topNavBarModules: this.$store.getters.getTopNavBarModules,
-        module: this.$store.getters.getLastClickModule, //进入页面默认选中模块
+        module: this.$store.getters.getLastClickModule,
         historyId: this.$store.getters.getHistoryId,
         'history-id': 'history-id',
         list: [],
@@ -59,12 +60,13 @@
           pageSize: 10,
           category: this.$store.getters.getLastClickModule
         },
-        reqUrl: '/app/index_appUser.do'
-      };
+        reqUrl: '/app/index_appUser.do',
+      }
     },
     components: {
       loadMore,
-      topNavBar
+      topNavBar,
+      slide
     },
     methods: {
       init(param) {
@@ -90,8 +92,6 @@
         this.module = modules;
         this.reqParamAdd.category = modules;
       }
-    },
-    mounted() {
     }
   }
 </script>

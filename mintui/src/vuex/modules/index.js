@@ -3,7 +3,6 @@ const commons = {
     lastClickModule: 'travel',
     historyId: new Set(),
     topNavBarPost: 0,
-    lastModuleIndex: 0,
     topNavBarModules: [  //模块列表, 应当从服务器获取
       {name: '推荐', moduleId: 'travel'},
       {name: '游戏', moduleId: 'game'},
@@ -28,9 +27,6 @@ const commons = {
     getTopNavBarPost: function (state) {
       return state.topNavBarPost;
     },
-    getLastModuleIndex: function (state) {
-      return state.lastModuleIndex;
-    },
     getTopNavBarModules: function (state) {
       return state.topNavBarModules;
     }
@@ -44,9 +40,6 @@ const commons = {
     },
     modTopNavBarPost(state, flag) {
       state.topNavBarPost = flag;
-    },
-    modLastModuleIndex(state, flag) {
-      state.lastModuleIndex = flag;
     },
   }
 };

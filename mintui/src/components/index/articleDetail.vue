@@ -37,16 +37,12 @@
         “有些文章，通俗点叫‘垃圾文章’，就是纯粹为了发文而发文，这种情况太多了。”谈到业内和社会各界出现的“论文无用”论，施一公表示“坚决反对”。“没有论文，怎么能有科学技术？但在追求论文的导向如此之强的时候，评价立场如此鲜明的时候，造成的负面影响其实非常大。”<br/><br/>
         如何改变现状？“说实话，我也没有特别好的办法。如果要提建议，就是应该进一步改进科学评价体系，这需要全社会达成一种共识。”施一公介绍，国际通用的方法是参考国际最顶尖专家的观点：“这是一种‘唯专家论’的方式，我不评价这种做法的利弊，但至少在很多国家都是这样的。如果是将本领域所有专家聚在一起，通过抽签确定评价委员会，在科学上，这样的民主是不能带领科学健康向前发展的。”
       </div>
-      <div style="text-align: center;margin-top: 1.5rem;margin-bottom: 1rem">
-        <span @click="getZanContent" class="zan-cai-num">
-          <img v-if="!zanContent" src="../../assets/images/thumb22.png" align="middle" style="width: 2rem"/>
-          <img v-if="zanContent" src="../../assets/images/thumb20.png" align="middle" style="width: 2rem"/>
-          <span style="vertical-align: sub;margin-left: -0.6rem">888</span>
+      <div style="text-align: center;margin: 2rem 0">
+        <span @click="getZanContent" class="zan-cai-num" :style="{borderColor: !zanContent ? '' : '#26a2ff'}">
+          <span :style="{color: !zanContent ? '' : '#26a2ff'}">赞 888</span>
         </span>
-        <span @click="getCaiContent" class="zan-cai-num" style="margin-left: 10%">
-          <img v-if="!caiContent" src="../../assets/images/thumb21.png" align="middle" style="width: 2rem;"/>
-          <img v-if="caiContent" src="../../assets/images/thumb19.png" align="middle" style="width: 2rem;"/>
-          <span style="vertical-align: sub;margin-left: -0.6rem">999</span>
+        <span @click="getCaiContent" class="zan-cai-num" :style="{marginLeft: '10%', borderColor: !caiContent ? '' : '#26a2ff'}">
+          <span :style="{color: !caiContent ? '' : '#26a2ff'}">踩 999</span>
         </span>
       </div>
 
@@ -313,8 +309,13 @@
   .zan-cai-num {
     border: 1px solid #ebebeb;
     height: 16rem;
-    padding: 0.2rem 1.5rem 0.8rem;
+    padding: 0.3rem 2rem;
     border-radius: 2rem;
+  }
+
+  .zan-cai-num span {
+    vertical-align: middle;
+    font-size: 0.75rem;
   }
 
   .my-button-bao {
