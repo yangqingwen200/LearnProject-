@@ -19,8 +19,7 @@
         <slot name="viewTemplate">
         </slot>
       </mt-loadmore>
-      <div v-show="noMoreData" :class="{'no-data-show': zeroRowData}"
-           style="color: grey;text-align: center;">
+      <div v-show="noMoreData" :style="{color: 'grey', textAlign: 'center', marginTop: zeroRowData ? '50%': ''}">
         <span>暂时没数据...</span>
       </div>
     </div>
@@ -78,7 +77,6 @@
         moveTranslate: 0,
         scroll: 0,
         showSearchBar: true,
-        'no-data-show': 'no-data-show',
         list: [],
         noMoreData: this.$store.getters.getNoMoreData,
         zeroRowData: false,
@@ -236,9 +234,4 @@
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg)
   }
-
-  .no-data-show {
-    margin-top: 50%;
-  }
-
 </style>

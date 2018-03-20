@@ -1,11 +1,6 @@
 <template>
   <div>
-    <top-nav-bar>
-      <div slot="topBar">
-        <div v-for="item in topNavBarModules" @click="changeModules(item.moduleId)"
-             :class="{'top-nar-bar': module === item.moduleId}">{{item.name}}
-        </div>
-      </div>
+    <top-nav-bar :top-nav-bar-modules="topNavBarModules" :last-click-module="module" @change-module="changeModules">
     </top-nav-bar>
     <slide :top-nav-bar-modules="topNavBarModules" :last-click-module="module" @slide-method="changeModules">
       <div slot="slideBar">
@@ -15,7 +10,7 @@
               <li v-for="item in list" @click="articleDetail(item.id)" style="margin-top: -5px;">
                 <table border="0" style="width: 100%">
                   <tr>
-                    <td><span v-text="item.title" :class="{'history-id': historyId.has(item.id)}"></span></td>
+                    <td><span v-text="item.title" :style="{color: historyId.has(item.id) ? '#a9acb1' : ''}"></span></td>
                     <td rowspan="2" style="width: 30%">
                       <img :src="item.middle_image" style="width: 100%;border-radius: 3px;"/>
                     </td>
@@ -45,7 +40,7 @@
 <script>
   import loadMore from '../commons/loadMore'
   import topNavBar from '../commons/topNavBar'
-  import slide from '../commons/slide'
+  import slide from '../commons/slideTabs'
 
   export default {
     name: "more",
@@ -54,7 +49,6 @@
         topNavBarModules: this.$store.getters.getTopNavBarModules,
         module: this.$store.getters.getLastClickModule,
         historyId: this.$store.getters.getHistoryId,
-        'history-id': 'history-id',
         list: [],
         reqParamAdd: {
           pageSize: 10,
@@ -97,7 +91,4 @@
 </script>
 
 <style scoped>
-  .history-id {
-    color: #a9acb1;
-  }
 </style>

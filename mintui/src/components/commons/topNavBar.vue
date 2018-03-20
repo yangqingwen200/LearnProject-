@@ -1,6 +1,9 @@
 <template>
   <div>
     <div id="topNavBar" class="lists">
+      <div v-for="item in topNavBarModules" @click="topNavBar(item.moduleId)"
+           :class="{'top-nar-bar': lastClickModule === item.moduleId}">{{item.name}}
+      </div>
       <slot name="topBar"></slot>
     </div>
     <div>
@@ -14,12 +17,23 @@
     name: "top-nav-bar",
     data() {
       return {
-        'top-nar-bar': 'top-nar-bar',
       }
     },
     props: {
+      topNavBarModules: {
+        type: Array,
+        default: [],
+        require: true
+      },
+      lastClickModule: {
+        type: String,
+        default: '',
+      }
     },
     methods: {
+      topNavBar(module) {
+        this.$emit('change-module', module);
+      }
     },
     mounted() {
       let _this = this;

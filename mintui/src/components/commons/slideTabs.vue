@@ -9,8 +9,6 @@
     name: "slide",
     data() {
       return {
-        pageX: 0,
-        temp: 0,
         clientWidth: document.documentElement.clientWidth,
         moveBegin: 0,
         opacity: 1,
@@ -28,7 +26,6 @@
       topNavBarModules: {
         type: Array,
         default: [],
-        require: true
       },
       lastClickModule: {
         type: String,
@@ -104,7 +101,6 @@
             }
           }
         }
-        _this.pageX = 0;
         _this.index = 0;
         _this.moveBegin = 0;
         _this.opacity = 1;
