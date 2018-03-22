@@ -47,7 +47,6 @@
     </div>
     <hr class="my-hr">
     <div id="articleComment" style="margin-bottom: 3rem;">
-      <div>
         <span v-for="item in comments">
           <table class="comment-table" cellpadding="0" cellspacing="0">
             <tr>
@@ -77,29 +76,28 @@
             </tr>
           </table>
         </span>
-      </div>
     </div>
     <div class="footer">
       <table cellspacing="0" cellpadding="0" style="width: 100%">
         <tr>
           <td v-show="!discussing" @click="goBackList" style="padding: 0 1rem 0.3rem 0.7rem;">
-            <img src="../../assets/images/arrow270.png" align="middle" style="width: 1.3rem"/>
+            <img src="../../assets/images/left.png" align="middle" style="width: 1.3rem"/>
           </td>
           <td>
             <input id="discussing" :class="{'my-input': true, 'my-input-discuss': discussing}"
                    :placeholder="placeholder"
                    v-model="discuss" v-on:blur="inputBlur" @focus="inputClick"/>
           </td>
-          <td v-if="!discussing" @click="goToComments" style="width: 12%">
-            <img src="../../assets/images/message5.png" style="width: 1.8rem;" align="middle"/>
+          <td v-if="!discussing" @click="goToComments" style="width: 15%">
+            <img src="../../assets/images/ali_message2.png" style="width: 1.8rem;" align="middle"/>
           </td>
-          <td v-if="!discussing" @click="getCollection" style="width: 12%">
-            <img v-show="!collection" src="../../assets/images/star_empty.png" align="middle"
-                 style="width: 1.8rem;"/>
-            <img v-show="collection" src="../../assets/images/star_fill.png" align="middle"
-                 style="width: 1.8rem;"/>
+          <td v-if="!discussing" @click="getCollection" style="width: 15%">
+            <img v-show="!collection" src="../../assets/images/ali_coll_emp.png" align="middle"
+                 style="width: 1.7rem;"/>
+            <img v-show="collection" src="../../assets/images/ali_coll_fill.png" align="middle"
+                 style="width: 1.7rem;"/>
           </td>
-          <td v-if="!discussing" @click="report" style="width: 12%">
+          <td v-if="!discussing" @click="report" style="width: 15%">
             <img src="../../assets/images/alarm63.png" align="middle" style="width: 1.6rem;"/>
           </td>
           <td v-if="discussing" @click="pubComment" align="middle" style="width: 20%">
@@ -109,7 +107,6 @@
             </button>
           </td>
         </tr>
-
       </table>
     </div>
   </div>
@@ -120,6 +117,7 @@
     name: "article-detail",
     data() {
       return {
+        scroll: 0,
         buttonValue: '',
         placeholder: '发表神评论...',
         isJuBao: false,
@@ -161,7 +159,7 @@
       },
       goToComments() {
         if (this.hasClick) {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, this.scroll);
         } else {
           window.scrollTo(0, (document.getElementById("articleDetail").offsetHeight - document.getElementById("articleComment").offsetHeight));
         }
@@ -202,6 +200,13 @@
       }
     },
     mounted() {
+      let _this = this;
+      document.getElementById('articleDetail').addEventListener('touchend', function (e) {
+        let className = e.target.parentNode.parentNode.parentNode.parentNode.className;
+        if(className !== 'footer') {
+          _this.scroll = window.scrollY;
+        }
+      })
     },
     watch: {
       discuss() {
@@ -259,7 +264,7 @@
     border-radius: 0.2rem;
     height: 1.7rem;
     font-size: 0.9rem;
-    border: 1px solid #a9acb1;
+    border: 0.12rem solid #a9acb1;
     padding-left: 0.5rem;
     width: 80%;
   }
@@ -272,7 +277,7 @@
     height: 1.9rem;
     border-radius: 0.25rem;
     border: 0px solid #a9acb1;
-    margin: 0 0.2rem;
+    margin-left: 0.3rem ;
     padding: 0 1rem;
   }
 

@@ -65,7 +65,8 @@
       },
       reqUrl: {
         type: String,
-        default: ''
+        default: '',
+        required: true //父组件必须传此属性
       }
     },
     data() {

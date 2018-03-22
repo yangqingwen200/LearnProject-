@@ -3,3 +3,12 @@
   height: 1px;
   border: none;
 }
+
+.icon {
+  width: 5em;
+  height: 5em;
+  vertical-align: -0.5rem;
+  /* 通过设置 color 来改变 SVG 的颜色/fill */
+  fill: currentColor;
+  overflow: hidden;
+}
