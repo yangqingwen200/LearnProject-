@@ -7,7 +7,8 @@ import store from './vuex'
 import 'mint-ui/lib/style.css'
 import './assets/css/my-mintui.css'
 import './assets/css/commons.css'
-import './assets/js/iconfont'
+import './assets/font/style.css' //样式地址: https://icomoon.io/app/#/select
+import './assets/aliIconFont/iconfont.css' //阿里icon字体样式: http://iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.d9df05512&cid=4491
 import './axios'
 import Mint from 'mint-ui'
 import clearParam from './assets/js/method/clearParam'

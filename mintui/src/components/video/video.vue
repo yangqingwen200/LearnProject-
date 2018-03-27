@@ -1,9 +1,11 @@
 <template>
   <div>
     <div v-for="item in videoSource" class="video" :style="{height: height}">
-      <video :id="'video' + item.id" :height="height" :width="width" :src="item.url"
+      <video :id="'video' + item.id" :height="height" :width="width"
              x5-playsinline="" playsinline="" webkit-playsinline="" poster="" preload="auto"
-             @ended="playEnd(item.id)" @pause="pause"></video>
+             @ended="playEnd(item.id)" @pause="pause">
+        <source :src="item.url"/>
+      </video>
       <div :id="'canvas' + item.id">
         <div class="canvas-video bg-cover" :style="{backgroundImage: item.bgCover}">
         </div>
@@ -12,31 +14,37 @@
           <small>{{item.playCount}}次播放</small>
         </div>
         <div class="play" @click="play(item.id)">
-          <icon name="play"></icon>
+          <i class="icon-play3" style="font-size: 1.5rem;padding-left: 0.3rem;"></i>
         </div>
         <time v-html="item.duration"></time>
         <div class="avatar bg-cover-all" :style="{backgroundImage: item.header}"></div>
+      </div>
+      <div :id="'canvasOver' + item.id" style="display: none">
+        <div class="canvas-video bg-cover" style="background: rgba(0, 0, 0, 0.5);">
+          <div>
+            <i class="icon-grin"></i> 好看
+            <i class="icon-angry" style="margin-left: 1rem"></i> 吐槽
+          </div>
+          <span @click="play(item.id)">
+            <i class="icon-spinner11"></i> 重播
+          </span>
+        </div>
       </div>
 
       <div class="comment">
         <span class="comment-source" v-html="item.source"></span>
         <span class="comment-right">
-          <span>
-            <img src="../../assets/images/f196.png" style="width: 1.1rem;"/>
-            <span style="vertical-align: super;">关注</span>
-          </span>
-          <span style="margin-left: 1.5rem">
-            <img src="../../assets/images/ali_message.png" style="width: 1.1rem;"/>
-            <span style="vertical-align: super;" v-html="item.commentCount"></span>
-          </span>
+          <i class="icon-plus"></i> 关注
+          <i class="icon-bubbles4"></i> {{item.commentCount}}
+            <i class="icon-share2"></i> 分享
         </span>
       </div>
     </div>
+    <hr class="my-hr"/>
   </div>
 </template>
 
 <script>
-  import icon from '../commons/iconSvg'
 
   export default {
     data() {
@@ -46,6 +54,28 @@
         videoSource: [
           {
             id: 1,
+            url: 'http://v3-tt.ixigua.com/49c41e9512d6afc2d61f88077fb61811/5ab4c5de/video/m/220147b55f175db498ab31b775275d0e9b8115514460000136ef549d851/',
+            bgCover: 'url(' + require('../../assets/images/background.jpg') + ')',
+            header: 'url(' + require('../../assets/images/header.jpeg') + ')',
+            title: '习大大发布视频, 建议大家都看',
+            duration: '19:20:20',
+            source: '悟空问答',
+            playCount: 20,
+            commentCount: 180
+          },
+          {
+            id: 2,
+            url: 'http://v3-tt.ixigua.com/e11b9a4fec366cf8dea86da333943550/5ab4c6b9/video/m/220c174682c41b449e79ac8018a088f030f115446840000ebd33b8e4b82/',
+            bgCover: 'url("https://p3.pstatp.com/list/300x170/628d0004955bf28d078e")',
+            header: 'url(' + require('../../assets/images/header.jpeg') + ')',
+            title: '习大大发布视频, 建议大家都看',
+            duration: '19:20:20',
+            source: '悟空问答',
+            playCount: 20,
+            commentCount: 180
+          },
+          {
+            id: 3,
             url: 'http://192.168.1.247:8082/app/video/mov_bbb.mp4',
             bgCover: 'url(' + require('../../assets/images/background.jpg') + ')',
             header: 'url(' + require('../../assets/images/header.jpeg') + ')',
@@ -53,29 +83,7 @@
             duration: '19:20:20',
             source: '悟空问答',
             playCount: 20,
-            commentCount : 180
-          },
-          {
-            id: 2,
-            url: 'http://192.168.1.247:8082/app/video/oceans.mp4',
-            bgCover: 'url(' + require('../../assets/images/background1.jpg') + ')',
-            header: 'url(' + require('../../assets/images/header.jpeg') + ')',
-            title: '习大大发布视频, 建议大家都看',
-            duration: '19:20:20',
-            source: '悟空问答',
-            playCount: 20,
-            commentCount : 180
-          },
-          {
-            id: 3,
-            url: 'http://192.168.1.247:8082/app/video/oceans.mp4',
-            bgCover: 'url(' + require('../../assets/images/background.jpg') + ')',
-            header: 'url(' + require('../../assets/images/header.jpeg') + ')',
-            title: '习大大发布视频, 建议大家都看',
-            duration: '19:20:20',
-            source: '悟空问答',
-            playCount: 20,
-            commentCount : 180
+            commentCount: 180
           },
           {
             id: 4,
@@ -86,7 +94,7 @@
             duration: '19:20:20',
             source: '悟空问答',
             playCount: 20,
-            commentCount : 180
+            commentCount: 180
           },
           {
             id: 5,
@@ -97,7 +105,7 @@
             duration: '19:20:20',
             source: '悟空问答',
             playCount: 20,
-            commentCount : 180
+            commentCount: 180
           },
           {
             id: 6,
@@ -108,26 +116,24 @@
             duration: '19:20:20',
             source: '悟空问答',
             playCount: 20,
-            commentCount : 180
+            commentCount: 180
           }
         ]
       }
     },
     components: {
-      icon
     },
     mounted() {
     },
     computed: {},
     methods: {
       play(index) {
-        document.getElementById('video' + index).style.display = "";
         document.getElementById('canvas' + index).style.display = "none";
+        document.getElementById('canvasOver' + index).style.display = "none";
         document.getElementById('video' + index).play();
       },
       playEnd(index) {
-        document.getElementById('canvas' + index).style.display = "";
-        document.getElementById('video' + index).style.display = "none";
+        document.getElementById('canvasOver' + index).style.display = "";
       },
       pause() {
       }
@@ -147,14 +153,15 @@
   .comment {
     font-size: 0.8rem;
     margin-top: 0.5rem;
-    margin-bottom: 4rem;
     .comment-source {
       margin-left: 0.8rem;
-      vertical-align: -webkit-baseline-middle
     }
     .comment-right {
       float: right;
       margin-right: 0.8rem;
+      i {
+        margin-left: 0.8rem;
+      }
     }
   }
 
@@ -174,6 +181,20 @@
       position: absolute;
       left: 0;
       top: 0;
+      span {
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0.8rem;
+        color: white;
+        font-size: 0.8rem;
+      }
+      div {
+        position: absolute;
+        top: 50%;
+        left: 30%;
+        font-size: 1rem;
+        color: white;
+      }
     }
 
     .play {
@@ -183,6 +204,11 @@
       transform: translate(-50%, -50%);
       background-color: rgba(0, 0, 0, .3);
       border-radius: 50%;
+      color: white;
+      width: 2.5rem;
+      height: 2.5rem;
+      text-align: center;
+      line-height: 3.1rem;
       svg {
         color: #fff;
         font-size: 0.4rem;
@@ -203,6 +229,7 @@
       }
       H4 {
         padding-left: 0.8rem;
+        font-size: 0.9rem;
       }
     }
     time {

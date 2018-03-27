@@ -16,7 +16,7 @@
               上观
             </td>
             <td rowspan="2">
-              <button class="focus-button">关注</button>
+              <button class="focus-button"><i class="icon-plus" style="font-size: 0.7rem"></i> 关注</button>
             </td>
           </tr>
           <tr>
@@ -35,12 +35,16 @@
         他表示，各个学校、单位都办了杂志，想要提高影响因子，互相引用就可以，引用多了，‘影响因子’自然也就高了。“中国这样的国家，想要把这3个指标做上去，我认为是易如反掌。”在他看来，论文不足以说明科技实力，美国没有这样的评价方式，科技实力却依然领先。“因此，论文和科技实力是两回事，大家千万要分开。”<br/><br/>
         不过他也承认，数字指标在各个单位都很重要，影响到评奖、评优、评先：“这是矛盾的两方面，一方面如果没有这些标准，如何反映科研的质量，但有了这些标准，大家拼命‘做’这个数字怎么办？”<br/><br/>
       </div>
-      <div style="text-align: center;margin: 2rem 0">
-        <span @click="getZanContent" class="zan-cai-num" :style="{borderColor: !zanContent ? '' : '#26a2ff'}">
-          <span :style="{color: !zanContent ? '' : '#26a2ff'}">赞 888</span>
-        </span>
-        <span @click="getCaiContent" class="zan-cai-num" :style="{marginLeft: '10%', borderColor: !caiContent ? '' : '#26a2ff'}">
-          <span :style="{color: !caiContent ? '' : '#26a2ff'}">踩 999</span>
+      <div style="text-align: center;margin: 1.5rem 0">
+        <span class="zan-cai-num"
+              :style="{borderColor: !zanContent ? '' : '#26a2ff',color: !zanContent ? '' : '#26a2ff'}">
+          <i class="icon-point-up"></i>
+          <span @click="getZanContent">888</span>
+          </span>
+        <span class="zan-cai-num"
+              :style="{marginLeft: '10%', borderColor: !caiContent ? '' : '#26a2ff', color: !caiContent ? '' : '#26a2ff'}">
+          <i class="icon-point-down"></i>
+          <span @click="getCaiContent">668</span>
         </span>
       </div>
 
@@ -57,8 +61,8 @@
             <tr style="font-size: 0.8rem">
               <td style="color: #26a2ff;">游客_1573</td>
               <td align="right">
-                <img :src="zanCommentPicUrl" style="width: 0.9rem;vertical-align: middle" @click="addZan($event)"/>
-                <span style="vertical-align: sub;margin-left: -0.1rem">123</span>
+                <i class="icon-grin" @click="addZan($event)"></i>
+                <span>123</span>
               </td>
             </tr>
             <tr>
@@ -67,7 +71,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2" style="font-size: 0.75rem;">
+              <td colspan="2" style="font-size: 0.7rem;">
                 <span v-html="item.time"></span> ·
                 <div class="comment-res">
                   23回复
@@ -168,10 +172,20 @@
       getCollection() {
         this.collection = !this.collection;
       },
-      getZanContent() {
+      getZanContent(e) {
+        if (this.zanContent) {
+          e.target.innerHTML = Number(e.target.innerHTML) - 1;
+        } else {
+          e.target.innerHTML = Number(e.target.innerHTML) + 1;
+        }
         this.zanContent = !this.zanContent;
       },
-      getCaiContent() {
+      getCaiContent(e) {
+        if(this.caiContent) {
+          e.target.innerHTML = Number(e.target.innerHTML) - 1;
+        } else {
+          e.target.innerHTML = Number(e.target.innerHTML) + 1;
+        }
         this.caiContent = !this.caiContent;
       },
       pubComment() {
@@ -191,8 +205,19 @@
         this.discuss = '';
       },
       addZan(e) {
-        e.target.src = require('../../assets/images/icon_like_alt.png');
-        e.target.nextElementSibling.innerHTML = "456"
+        //e.target.src = require('../../assets/images/icon_like_alt.png');
+        let classList = e.target.classList;
+        let innerHTML = e.target.nextElementSibling.innerHTML;
+        if (classList.contains('icon-grin2')) {
+          classList.remove('icon-grin2');
+          classList.add('icon-grin');
+          innerHTML = Number(innerHTML) - 1;
+        } else if (classList.contains('icon-grin')) {
+          classList.remove('icon-grin');
+          classList.add('icon-grin2');
+          innerHTML = Number(innerHTML) + 1;
+        }
+        e.target.nextElementSibling.innerHTML = innerHTML;
       },
       report() {
         this.isJuBao = true;
@@ -203,7 +228,7 @@
       let _this = this;
       document.getElementById('articleDetail').addEventListener('touchend', function (e) {
         let className = e.target.parentNode.parentNode.parentNode.parentNode.className;
-        if(className !== 'footer') {
+        if (className !== 'footer') {
           _this.scroll = window.scrollY;
         }
       })
@@ -234,10 +259,8 @@
 
   .comment-table {
     width: 100%;
-    font-size: 0.95rem;
     border-collapse: separate;
     border-spacing: 0px 0.4rem;
-    color: black;
   }
 
   .footer {
@@ -277,23 +300,13 @@
     height: 1.9rem;
     border-radius: 0.25rem;
     border: 0px solid #a9acb1;
-    margin-left: 0.3rem ;
+    margin-left: 0.3rem;
     padding: 0 1rem;
   }
 
   .my-button-ok {
     background-color: #26a2ff;
     color: aliceblue;
-  }
-
-  .commentNum {
-    float: right;
-    margin-left: -1.25rem;
-    background-color: #26a2ff;
-    color: #fafafa;
-    border-radius: 0.4rem;
-    padding: 0 0.25rem;
-    font-size: 0.7rem;
   }
 
   .comment-res {
@@ -304,15 +317,11 @@
   }
 
   .zan-cai-num {
-    border: 1px solid #ebebeb;
+    border: 1px solid #a9acb1;
     height: 16rem;
-    padding: 0.3rem 2rem;
+    padding: 0.4rem 2rem;
     border-radius: 2rem;
-  }
-
-  .zan-cai-num span {
-    vertical-align: middle;
-    font-size: 0.75rem;
+    vertical-align: bottom;
   }
 
   .my-button-bao {
