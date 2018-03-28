@@ -35,7 +35,7 @@
         他表示，各个学校、单位都办了杂志，想要提高影响因子，互相引用就可以，引用多了，‘影响因子’自然也就高了。“中国这样的国家，想要把这3个指标做上去，我认为是易如反掌。”在他看来，论文不足以说明科技实力，美国没有这样的评价方式，科技实力却依然领先。“因此，论文和科技实力是两回事，大家千万要分开。”<br/><br/>
         不过他也承认，数字指标在各个单位都很重要，影响到评奖、评优、评先：“这是矛盾的两方面，一方面如果没有这些标准，如何反映科研的质量，但有了这些标准，大家拼命‘做’这个数字怎么办？”<br/><br/>
       </div>
-      <div style="text-align: center;margin: 1.5rem 0">
+      <div style="text-align: center;margin: 1.5rem 0;font-size: 0.8rem">
         <span class="zan-cai-num"
               :style="{borderColor: !zanContent ? '' : '#26a2ff',color: !zanContent ? '' : '#26a2ff'}">
           <i class="icon-point-up"></i>
@@ -92,16 +92,16 @@
                    :placeholder="placeholder"
                    v-model="discuss" v-on:blur="inputBlur" @focus="inputClick"/>
           </td>
-          <td v-if="!discussing" @click="goToComments" style="width: 15%">
+          <td v-if="!discussing" @click="goToComments" style="width: 15%;text-align: center">
             <img src="../../assets/images/ali_message2.png" style="width: 1.8rem;" align="middle"/>
           </td>
-          <td v-if="!discussing" @click="getCollection" style="width: 15%">
+          <td v-if="!discussing" @click="getCollection" style="width: 15%;text-align: center">
             <img v-show="!collection" src="../../assets/images/ali_coll_emp.png" align="middle"
                  style="width: 1.7rem;"/>
             <img v-show="collection" src="../../assets/images/ali_coll_fill.png" align="middle"
                  style="width: 1.7rem;"/>
           </td>
-          <td v-if="!discussing" @click="report" style="width: 15%">
+          <td v-if="!discussing" @click="report" style="width: 15%;text-align: center">
             <img src="../../assets/images/alarm63.png" align="middle" style="width: 1.6rem;"/>
           </td>
           <td v-if="discussing" @click="pubComment" align="middle" style="width: 20%">
